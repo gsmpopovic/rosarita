@@ -187,7 +187,12 @@ async def list_warnings(message: Message):
         else:
             msg: List[str] = []
             for key in warning_counts:
+                # msg = str_ops.limited_content(f"**<@{key}>** -> {warning_counts[key]} warnings!", msg)
+                # If user's warnings aren't greater than or less than 1, use "warning"
+                if warning_counts[key] > 1 or warning_counts[key] < 1:
                 msg = str_ops.limited_content(f"**<@{key}>** -> {warning_counts[key]} warnings!", msg)
+                else:
+                msg = str_ops.limited_content(f"**<@{key}>** -> {warning_counts[key]} warning!", msg)
             for piece in msg:
                 await message.channel.send(piece)
     else:

@@ -9,4 +9,5 @@ intents.members = True
 intents.presences = True
 
 client = RosaritaClient(intents=intents)
-client.run(bot_token)
+# client.run(bot_token)
+client.run("Nzg5Mjk4NDczNzM1ODE1MTg3.X9wBfA.j3XBNnaAEzerxYuXXs3W5ZZEwn4")

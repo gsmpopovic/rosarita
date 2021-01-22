@@ -1,0 +1,149 @@
+
+
+
+
+
+@Roberta list warnings
+if warning is <1, type 1 warning! instead of 1 Warning(s)!
+if warning is >1, type No warnings!
+
+
+
+
+
+
+
+
+simps must die / no mute needed
+
+==Assistant Commands==
+
+Roberta, remind me "something" in X (minutes, hours, days)
+Roberta, remind me "something" at xx:xx AM/PM (timezone)
+> ask if recurring
+reminders (no recurring) *notifies via DM*
+
+
+
+
+==Reading List Updates==
+
+Daily Reading list Update Search | updates twice a day at 00:00 and at 12:00 ET
+needs scraper for websites.
+
+Mangadex has a public API so we might be able to add that one.
+
+Tenative Website list:
+Creative novels
+Manga dex
+manga updates
+royalroad
+manganelo
+wuxiaworld
+
+==READING LIST==
+Per-user reading notification list:
+Link | Chapter X
+mangadex.org/title/50300
+Ask what chapter > user input chapter number > looks for (user chapter # input +1 or something)
+If found, increment the number (X+2 now) + ping user who is subscribed.
+
+Also have a short explanation posted when the command is run that the link has to be from the light novel / manga home page where the list of chapters is.
+
+I would like the User list to have an emote next to new updates.
+
+Title | current chapter : total chapters
+
+Commands:
+Roberta add "T: (Title)" "N: (number)" "L: (Link)" to my reading list. T:, N:, and L: are the delimiters.
+Roberta update "Title" to "Chapter Y" on my reading list.
+
+==USER READING LIST LAYOUT==
+
+"Roberta show my reading list.
+
+Title | Current chapter / Total chapaters | [manga / Light novel home page link]
+Title | Current chapter / Total chapaters | [manga / Light novel home page link]
+etc...
+
+@Roberta reading list (per user) #People can only pull their own, and it posts to the user via DM
+
+
+==READING STATS==
+Global reading list / notification squad
+
+Top reading list of all users:
+Query all entries
+Count top entry that repeats "List top 10"
+
+
+
+
+==READING LIST UPDATES==
+
+All updates for series are sent via DM
+DMs not locked to data owner, however commands locked to data owner only
+User can unsubscribe from ALL reading lists via DM to the bot.
+
+==READING LIST UNSUBSCRIBE==
+User DMs bot about something other than unsubscribing > "*Stares* I don't talk to customers outside of work. If you want to unsubscribe, please say that instead."
+"unsubscribe"
+
+Are you sure? You will lose your entire reading list and this **can't be recovered**.
+
+Yes , no reaction. if yes, V if no, then cancel.
+
+Done. You have been unsubscribed.
+
+==BOT LEAVING SERVERS VIA COMMAND==
+
+Ability for me (the owner) to see a the list of servers that the bot has joined, along with the server ID (needed for leaving I think)
+Ability for me (the owner) to command the bot to leave a server it has joined.
+
+
+==RECALLING DELETED OR EDITED TEXT==
+
+Roberta snipe (number)
+roberta passively copies all messages to a file and deletes entries after 30 seconds. This gives roberta the ability to recall up to 10 messages (Roberta snipe 10)
+
+Roberta editsnipe *same thing but with message edits* 
+
+==Warn reason mandatory==
+
+@Roberta warn @user
+Roberta: "Why?" (if no reason given)
+
+==24/7 uptime and redundancy==
+
+real time application with fail safes
+Server startup > auto run roberta 1
+Instance 1 of roberta fully running then starts 2
+Instance 2 of roberta starts and sees that 1 is running somehow and waits.
+
+if 1 crashes or reboots, 2 takes over immediately.
+
+Some way to schedule restart of the instances one at a time
+
+2 reboots 1 after X uptime. After 1 is fully up, 1 reboots 2 then goes back to waiting.
+
+
+Option to auto delete warnings on a per server basis
+
+
+set a "hi" response timer per person or make it random whether she responds to hi 5 mins
+
+==MUSIC COMMANDS==
+@Roberta, [lofi please]
+moves you to music channel > joins channel > and plays https://www.youtube.com/watch?v=5qap5aO4i9A in a channel called #music
+ -needs the ability to join voice channels and play music
+ -needs music commands
+ -All music commands use @Roberta rp (youtube link)
+
+Link to my server for any tech support issues.
+https://discord.gg/48cgK679PU
+
+Change Roberta's status to "@roberta help".
+
+-------------------------------------------------------------------------
+
+

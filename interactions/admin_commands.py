@@ -155,19 +155,35 @@ async def warn(message: Message, split_content: List[str]):
     # If the length of our message is less than or equal to 3, 
     # that means that the user didn't enter a warning message, so we'd use a default message
     # e.g., @r warn @e 
-    if len(split_content) <= 3:
+    # If less than 4, they didn't enter a reason, so we exit. 
+
+    if len(split_content) <= 4:
         warning = None
-        reason = None # GP: This line is redundant.
-        await message.channel.send("Hey! You need to enter a reason for warning me!")
-        return 
+
+        if not split_content[3].startswith("R:") and warning == None:
+            await message.channel.send("Hey! You need to enter a reason for warning me!")
+            return  
+        
+        reason_idx = split_content.index("R:")
+        reason = " ".join(split_content[reason_idx:])
+        for member in message.mentions:
+            if member != data.self_user and isinstance(member, Member):
+                if warning is None:
+                    await data.warn(member, message_ops.parse(defs.default_warn_message, member), reason)
+                else:
+                    await data.warn(member, warning, reason)
+    # There needs to be a space before and after R: or else
+    # the bot will throw an error. 
     else:
-        warning = " ".join(split_content[3:])
-    for member in message.mentions:
-        if member != data.self_user and isinstance(member, Member):
-            if warning is None:
-                await data.warn(member, message_ops.parse(defs.default_warn_message, member))
-            else:
-                await data.warn(member, warning)
+        reason_idx = split_content.index("R:")
+        warning = " ".join(split_content[3:reason_idx])
+        reason = " ".join(split_content[reason_idx:])
+        for member in message.mentions:
+            if member != data.self_user and isinstance(member, Member):
+                if warning is None:
+                    await data.warn(member, message_ops.parse(defs.default_warn_message, member), reason)
+                else:
+                    await data.warn(member, warning, reason)
 
 
 async def owoify(message: Message, _split_content: List[str]):

@@ -181,9 +181,9 @@ async def warn(message: Message, split_content: List[str]):
         for member in message.mentions:
             if member != data.self_user and isinstance(member, Member):
                 if warning is None:
-                    await data.warn(member, message_ops.parse(defs.default_warn_message, member))
+                    await data.warn(member, message_ops.parse(defs.default_warn_message, member), reason)
                 else:
-                    await data.warn(member, warning)
+                    await data.warn(member, warning, reason)
 
 
 async def owoify(message: Message, _split_content: List[str]):

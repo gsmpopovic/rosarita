@@ -111,18 +111,18 @@ async def check_temps():
 
 
 @data_locked
-async def warn(member: Member, warning: str, reason: str):
+async def warn(member: Member, warning: str):
     guild_id: str = str(member.guild.id)
     member_id: str = str(member.id)
     if guild_id in _warnings:
         if member_id in _warnings[guild_id]:
-            _warnings[guild_id][member_id].append([warning, reason])
+            _warnings[guild_id][member_id].append(warning)
 
         else:
-            _warnings[guild_id][member_id] = [warning, reason]
+            _warnings[guild_id][member_id] = [warning]
 
     else:
-        _warnings[guild_id] = {member_id: [warning, reason]}
+        _warnings[guild_id] = {member_id: [warning]}
     await _save()
 
 

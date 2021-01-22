@@ -145,10 +145,21 @@ async def unmute(message: Message):
                     except Forbidden:
                         await message.channel.send(f"Couldn't unmute {member.mention}. Not enough permissions.")
 
+# GP:
+# Function def in its original form: 
+# async def warn(message: Message, split_content: List[str]):
 
 async def warn(message: Message, split_content: List[str]):
+
+    # GP: 
+    # If the length of our message is less than or equal to 3, 
+    # that means that the user didn't enter a warning message, so we'd use a default message
+    # e.g., @r warn @e 
     if len(split_content) <= 3:
         warning = None
+        reason = None # GP: This line is redundant.
+        await message.channel.send("Hey! You need to enter a reason for warning me!")
+        return 
     else:
         warning = " ".join(split_content[3:])
     for member in message.mentions:

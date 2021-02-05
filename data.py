@@ -6,6 +6,10 @@ from typing import Set, Dict, List, Optional
 
 from discord import User, Member, Guild, Role, Client, HTTPException
 
+# 02/05/21
+# Import message
+from discord import Message 
+
 import defs
 
 client: Client
@@ -29,6 +33,12 @@ _warnings: Dict[str, Dict[str, List[str]]] = {}
 _reaction_roles: Dict[str, Dict[str, str]] = {}
 _reaction_messages: Dict[str, List[List[int]]] = {}
 
+# 02/05/21
+# Create two dictionaries to hold edited and deleted messages. 
+
+_edits = {}
+
+
 creed = 0
 
 
@@ -38,6 +48,15 @@ def data_locked(func):
             return await func(*args, **kwargs)
 
     return wrapper
+
+# 02/05/21
+# Record edits 
+
+@data_locked 
+async def record_edits(message: Message):
+    print(message)
+    _edits.append(message.content)
+    await _save()
 
 
 @data_locked
@@ -269,5 +288,6 @@ async def _save():
             '_temp_mutes': _temp_mutes,
             '_warnings': _warnings,
             '_reaction_roles': _reaction_roles,
-            '_reaction_messages': _reaction_messages
+            '_reaction_messages': _reaction_messages,
+            '_edits': _editts
         }, f)

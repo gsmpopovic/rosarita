@@ -160,7 +160,7 @@ async def warn(message: Message, split_content: List[str]):
     if len(split_content) <= 4:
         warning = None
 
-        if not split_content[3].startswith("R:") and warning == None:
+        if not split_content[3].startswith("R:"):
             await message.channel.send("Hey! You need to enter a reason for warning me!")
             return  
         
@@ -175,15 +175,15 @@ async def warn(message: Message, split_content: List[str]):
     # There needs to be a space before and after R: or else
     # the bot will throw an error. 
     else:
-        reason_idx = split_content.index("R:")
         warning = " ".join(split_content[3:reason_idx])
+        reason_idx = split_content.index("R:")
         reason = " ".join(split_content[reason_idx:])
         for member in message.mentions:
             if member != data.self_user and isinstance(member, Member):
                 if warning is None:
-                    await data.warn(member, message_ops.parse(defs.default_warn_message, member), reason)
+                    await data.warn(member, message_ops.parse(defs.default_warn_message, member))
                 else:
-                    await data.warn(member, warning, reason)
+                    await data.warn(member, warning)
 
 
 async def owoify(message: Message, _split_content: List[str]):

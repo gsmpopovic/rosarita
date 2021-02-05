@@ -28,7 +28,6 @@ async def clear(message: Message, split_content: List[str]):
         except Forbidden:
             pass
 
-
 async def unban(message: Message, _split_content: List[str]):
     if len(_split_content) <= 2:
         await message.channel.send(f"Wrong command. Correct use is **{data.self_user.mention} unban ID**, "
@@ -144,7 +143,7 @@ async def unmute(message: Message):
                         await data.unmute(member, role)
                     except Forbidden:
                         await message.channel.send(f"Couldn't unmute {member.mention}. Not enough permissions.")
-
+# 02/05/21
 # GP:
 # Function def in its original form: 
 # async def warn(message: Message, split_content: List[str]):
@@ -181,9 +180,9 @@ async def warn(message: Message, split_content: List[str]):
         for member in message.mentions:
             if member != data.self_user and isinstance(member, Member):
                 if warning is None:
-                    await data.warn(member, message_ops.parse(defs.default_warn_message, member))
+                    await data.warn(member, message_ops.parse(defs.default_warn_message, member), reason)
                 else:
-                    await data.warn(member, warning)
+                    await data.warn(member, warning, reason)
 
 
 async def owoify(message: Message, _split_content: List[str]):

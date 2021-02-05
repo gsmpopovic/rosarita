@@ -122,6 +122,28 @@ class RosaritaClient(discord.Client):
                         await admin_commands.private_loose[trigger](message)
                         return
 
+    # 02/05/21
+    # On message delete
+    # Two positional arguments (because class), self and message object. 
+    async def on_message_delete(self, message: Message):
+
+        if not self.ready: 
+            return 
+
+        await message.channel.send(f"{message.content} was deleted")
+
+    # 02/05/21
+    # On message edit
+    # Three positional arguments, self, message_before, message_after. 
+    async def on_message_edit(self, message_before, message_after):
+
+        if not self.ready: 
+            return 
+
+        await message_after.channel.send(f"{message_before.content} was edited to say {message_after.content}")
+
+        await data.record_edits(message_before)
+
     async def on_raw_reaction_add(self, payload: RawReactionActionEvent):
         if not self.ready:
             return

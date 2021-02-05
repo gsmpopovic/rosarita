@@ -52,7 +52,7 @@ class RosaritaClient(discord.Client):
                     trigger: str = split_content[1].lower()
                     if is_guild_owner:
                         if trigger in admin_commands.exact:
-                            await admin_commands.exact[trigger](message, split_content)
+                            await admin_commands.exact[trigger](message, split_content,)
                             return
                         second_content_lower: str = content_lower[len(split_content[0]) + 1:]
                         for trigger in admin_commands.starts_with:

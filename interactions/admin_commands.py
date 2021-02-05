@@ -3,11 +3,28 @@ from typing import List, Dict
 
 import discord
 from discord import Message, Forbidden, Guild, Member, Role, User, NotFound, HTTPException, InvalidArgument
-
 import data
 import defs
 from interactions import time_ops, reaction_messages, str_ops
 from utils import message_ops
+
+# Display all of the guilds where bot is a member. 
+
+async def memberof(message: Message, split_content: List[str]):
+    
+    for guild in data.client.guilds:
+        await message.channel.send({"guild_name":guild.name, "guild_id":guild.id})
+
+# Force the bot to leave a guild if a guild id is passed when this function is called. 
+
+async def leaveguild(message: Message, split_content: List[str]):
+    guild_id = split_content[2]
+    for guild in data.client.guilds:
+        if guild.id == int(guild_id):
+            print("leave")
+            await guild.leave()
+
+# Snipe deleted or edited messages. 
 
 async def snipe(message: Message, split_content: List[str]):
     items = int(split_content[2]) # The number of edits or deletes to snipe
@@ -398,9 +415,11 @@ exact = {
     # 02/05/21
     # Adding snipe trigger
     # Adding memberof trigger
+    # Adding leaveguild trigger
 
-    "snipe":snipe 
-    "memberof":memberof
+    "snipe":snipe,
+    "memberof":memberof,
+    "leaveguild":leaveguild
 }
 
 starts_with = {

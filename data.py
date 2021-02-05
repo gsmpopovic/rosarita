@@ -67,6 +67,9 @@ async def record_edits(message_before, message_after):
     })
     await _save()
 
+# 02/05/21
+# Record deletes
+
 @data_locked 
 async def record_deletes(deleted_message):
     author = deleted_message.author
@@ -78,6 +81,37 @@ async def record_deletes(deleted_message):
             }
     })
     await _save()
+
+# 02/05/21
+# Snipe 
+
+@data_locked 
+async def snipe(message, items, target):
+    channel = message.channel
+    # sniped = []
+    if target == "edits":
+        if items < len(_edits):
+            # for i in n:
+            #     sniped.append(_edits[i])
+            # await message.channel.send(sniped)
+            i = 0
+            while i < items:
+                await message.channel.send(_edits[i])
+                i += 1
+        else:
+            await message.channel.send("tHere aren't that many edits.")
+    else: 
+        if items < len(_deletes):
+            # for i in n:
+            #     sniped.append(_edits[i])
+            # await message.channel.send(sniped)
+            i = 0
+            while i < items:
+                await message.channel.send(_deletes[i])
+                i += 1
+        else:
+            await message.channel.send("tHere aren't that many deletes.")
+
 
 
 @data_locked

@@ -10,12 +10,11 @@ from interactions import time_ops, reaction_messages, str_ops
 from utils import message_ops
 
 async def snipe(message: Message, split_content: List[str]):
-    if split_content[1].lower == "edits":
-        edits = data["_edits"]
-        for i in edits: 
-            print(i)
-    else:
-        pass
+    items = int(split_content[2]) # The number of edits or deletes to snipe
+    target = split_content[3]
+    if target == "edits" or target == "deletes":
+        await data.snipe(message, items, target)
+
 
 async def clear(message: Message, split_content: List[str]):
     limit = 2
@@ -394,12 +393,14 @@ exact = {
     "clear": clear,
     "unban": unban,
     "warn": warn,
-    "owoify": owoify
+    "owoify": owoify,
 
     # 02/05/21
     # Adding snipe trigger
+    # Adding memberof trigger
 
-    "snipe" snipe 
+    "snipe":snipe 
+    "memberof":memberof
 }
 
 starts_with = {

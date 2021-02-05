@@ -9,6 +9,13 @@ import defs
 from interactions import time_ops, reaction_messages, str_ops
 from utils import message_ops
 
+async def snipe(message: Message, split_content: List[str]):
+    if split_content[1].lower == "edits":
+        edits = data["_edits"]
+        for i in edits: 
+            print(i)
+    else:
+        pass
 
 async def clear(message: Message, split_content: List[str]):
     limit = 2
@@ -388,6 +395,11 @@ exact = {
     "unban": unban,
     "warn": warn,
     "owoify": owoify
+
+    # 02/05/21
+    # Adding snipe trigger
+
+    "snipe" snipe 
 }
 
 starts_with = {

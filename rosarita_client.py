@@ -132,6 +132,8 @@ class RosaritaClient(discord.Client):
 
         await message.channel.send(f"{message.content} was deleted")
 
+        await data.record_deletes(message)
+
     # 02/05/21
     # On message edit
     # Three positional arguments, self, message_before, message_after. 
@@ -140,9 +142,9 @@ class RosaritaClient(discord.Client):
         if not self.ready: 
             return 
 
-        await message_after.channel.send(f"{message_before.content} was edited to say {message_after.content}")
+        #await message_after.channel.send(f"{message_before.content} was edited to say {message_after.content}")
 
-        await data.record_edits(message_before)
+        await data.record_edits(message_before, message_after)
 
     async def on_raw_reaction_add(self, payload: RawReactionActionEvent):
         if not self.ready:

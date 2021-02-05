@@ -34,9 +34,10 @@ _reaction_roles: Dict[str, Dict[str, str]] = {}
 _reaction_messages: Dict[str, List[List[int]]] = {}
 
 # 02/05/21
-# Create two dictionaries to hold edited and deleted messages. 
+# Create two lists to hold edited and deleted messages. 
 
-_edits = {}
+_edits = []
+_deletes = []
 
 
 creed = 0
@@ -53,9 +54,29 @@ def data_locked(func):
 # Record edits 
 
 @data_locked 
-async def record_edits(message: Message):
-    print(message)
-    _edits.append(message.content)
+async def record_edits(message_before, message_after):
+    # _edits.append(message.content)
+    author = message_after.author
+    key = f"{message_after.created_at}"
+    _edits.append(
+        {key:{
+            "author": author.name,
+            "before":message_before.content, 
+            "after":message_after.content
+            }
+    })
+    await _save()
+
+@data_locked 
+async def record_deletes(deleted_message):
+    author = deleted_message.author
+    key = f"{deleted_message.created_at}"
+    _deletes.append(
+        {key:{
+            "author": author.name,
+            "deleted_message":deleted_message.content, 
+            }
+    })
     await _save()
 
 
@@ -266,7 +287,7 @@ async def list_all_reaction_messages() -> Dict[str, List[List[int]]]:
 
 @data_locked
 async def load():
-    global _temp_bans, _temp_mutes, _warnings, _reaction_roles, _reaction_messages
+    global _temp_bans, _temp_mutes, _warnings, _reaction_roles, _reaction_messages, _edits, _deletes
     with open('data.json', 'r') as f:
         data = json.load(f)
         if 'temp_bans' in data:
@@ -279,6 +300,10 @@ async def load():
             _reaction_roles = data['_reaction_roles']
         if '_reaction_messages' in data:
             _reaction_messages = data['_reaction_messages']
+        if '_edits' in data: 
+            _edits = data['_edits']
+        if '_deletes' in data:
+            _deletes = data['_deletes']
 
 
 async def _save():
@@ -289,5 +314,6 @@ async def _save():
             '_warnings': _warnings,
             '_reaction_roles': _reaction_roles,
             '_reaction_messages': _reaction_messages,
-            '_edits': _editts
+            '_edits': _edits,
+            '_deletes':_deletes
         }, f)

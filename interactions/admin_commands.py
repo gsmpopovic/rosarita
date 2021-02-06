@@ -1,12 +1,42 @@
 import asyncio
 from typing import List, Dict
 
-import discord
 from discord import Message, Forbidden, Guild, Member, Role, User, NotFound, HTTPException, InvalidArgument
+
+#import utils
+from discord import utils
+
+# 02/05/21
+#import tasks from discord.ext 
+# import checks
+
+from discord.ext import tasks 
+import checks 
 import data
 import defs
 from interactions import time_ops, reaction_messages, str_ops
 from utils import message_ops
+
+# Remind me
+
+async def remind(message: Message, split_content: List[str]):
+
+    subject = split_content[3]
+    time = float(split_content[5])
+    inter = split_content[6]
+    recurring = split_content[7] # yes or no
+
+    # Roberta, remind me "something" in X (minutes, hours, days)
+    # Roberta, remind me "something" at xx:xx AM/PM (timezone)
+
+
+# Join music channel 
+async def music(message: Message, split_content: List[str]):
+    channel = discord.utils.find(lambda x: x.name == 'new', message.guild.channels)
+    print(channel)
+    #await channel.connect()
+    print(message.author.voice)
+    #await message.author.move_to(channel)
 
 # Display all of the guilds where bot is a member. 
 
@@ -419,7 +449,13 @@ exact = {
 
     "snipe":snipe,
     "memberof":memberof,
-    "leaveguild":leaveguild
+    "leaveguild":leaveguild,
+
+    #02/05/21 
+    # Adding "music please" trigger
+    # Adding remind trigger 
+    "remind":remind, 
+    "music":music
 }
 
 starts_with = {

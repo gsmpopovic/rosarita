@@ -2,10 +2,8 @@ import asyncio
 
 from discord import Guild, HTTPException, Forbidden, Role, PermissionOverwrite
 from discord.abc import GuildChannel
-
 import data
 import defs
-
 
 async def check_mute_roles():
     print("Checking mute roles...")

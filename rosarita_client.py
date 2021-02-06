@@ -33,6 +33,8 @@ class RosaritaClient(discord.Client):
             asyncio.create_task(checks.check_creed()())
 
             self.ready = True
+            await self.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="@help"))
+
             print("Ready!")
 
     async def on_message(self, message: Message):

@@ -1,21 +1,24 @@
 import asyncio
 from typing import List, Dict
 
-from discord import Message, Forbidden, Guild, Member, Role, User, NotFound, HTTPException, InvalidArgument
+from discord import Message, Forbidden, Guild, Member, Role, User, NotFound, HTTPException, InvalidArgument, utils
 
-#import utils
-from discord import utils
+#imported utils from discord 02/05/21
 
 # 02/05/21
 #import tasks from discord.ext 
 # import checks
 
-from discord.ext import tasks 
+from discord.ext import tasks, commands
 import checks 
 import data
 import defs
 from interactions import time_ops, reaction_messages, str_ops
 from utils import message_ops
+
+# import error-handling 
+
+#import errors 
 
 # Remind me
 
@@ -32,11 +35,19 @@ async def remind(message: Message, split_content: List[str]):
 
 # Join music channel 
 async def music(message: Message, split_content: List[str]):
-    channel = discord.utils.find(lambda x: x.name == 'new', message.guild.channels)
+    channel = utils.find(lambda x: x.name == 'music', message.guild.channels)
     print(channel)
-    #await channel.connect()
+
+    # This will raise the exception if our bot is already in a specific voice channel 
+    try:
+        await channel.connect()
+
+    except:
+        print("already connected")
+
     print(message.author.voice)
-    #await message.author.move_to(channel)
+    await message.author.move_to(channel)
+
 
 # Display all of the guilds where bot is a member. 
 

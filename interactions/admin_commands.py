@@ -14,7 +14,7 @@ import checks
 import data
 import defs
 from interactions import time_ops, reaction_messages, str_ops
-from utils import message_ops
+from utils import message_ops, get
 
 # import error-handling 
 
@@ -35,18 +35,28 @@ async def remind(message: Message, split_content: List[str]):
 
 # Join music channel 
 async def music(message: Message, split_content: List[str]):
-    channel = utils.find(lambda x: x.name == 'music', message.guild.channels)
-    print(channel)
+    
+    # This would be to find a particular channel based on name. 
+    # channel = utils.find(lambda x: x.name == 'music', message.guild.channels)
+    # print(channel)
 
     # This will raise the exception if our bot is already in a specific voice channel 
+    channel = message.author.voice.channel
+    print(message.author.voice.channel)
+
     try:
         await channel.connect()
 
     except:
         print("already connected")
 
-    print(message.author.voice)
-    await message.author.move_to(channel)
+    # I would have continued in this vein if I were aware of some 
+    # means by which I can auto-connect a user to a voice channel. 
+    # print(message.author.voice)
+    # await message.author.move_to(channel)
+
+    player = await channel.create_ytdl_player(url)
+    player.start()
 
 
 # Display all of the guilds where bot is a member. 

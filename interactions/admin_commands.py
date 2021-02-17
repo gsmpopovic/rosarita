@@ -9,17 +9,30 @@ from discord import Message, Forbidden, Guild, Member, Role, User, NotFound, HTT
 #import tasks from discord.ext 
 # import checks
 
+#02/17/21 
+# imported commands 
+
 from discord.ext import tasks, commands
+
 import checks 
 import data
 import defs
 from interactions import time_ops, reaction_messages, str_ops
-from utils import message_ops, get
+#from utils import message_ops
 
-# import error-handling 
+# 02/17/21
+#imported get from utils
+# imported FFmpegPCMAudio from discord
+#imported youtube_dl 
 
-#import errors 
+# for FFmpegPCMAudio you need to download FFMPeg. 
+# I use Windows, so:
+# https://lame.buanzo.org/#lamewindl
 
+from discord import FFmpegPCMAudio
+from youtube_dl import YoutubeDL
+####################################
+###################################
 # Remind me
 
 async def remind(message: Message, split_content: List[str]):
@@ -33,7 +46,8 @@ async def remind(message: Message, split_content: List[str]):
     # Roberta, remind me "something" at xx:xx AM/PM (timezone)
 
 
-# Join music channel 
+# Join music channel
+
 async def music(message: Message, split_content: List[str]):
     
     # This would be to find a particular channel based on name. 
@@ -55,8 +69,20 @@ async def music(message: Message, split_content: List[str]):
     # print(message.author.voice)
     # await message.author.move_to(channel)
 
-    player = await channel.create_ytdl_player(url)
-    player.start()
+    YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist':'True'}
+    FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
+    # voice = get(data.client.voice_clients, guild=ctx.guild)
+    voice = data.client.voice_clients
+
+    if not voice.is_playing():
+        with YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(video_link, download=False)
+        URL = info['formats'][0]['url']
+        voice.play(FFmpegPCMAudio(URL, **FFMPEG_OPTIONS))
+        voice.is_playing()
+    else:
+        await ctx.send("Already playing song")
+        return
 
 
 # Display all of the guilds where bot is a member. 

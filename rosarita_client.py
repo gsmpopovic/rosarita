@@ -4,6 +4,12 @@ from typing import List, Optional
 import discord
 from discord import Message, AppInfo, Guild, Forbidden, Role, RawReactionActionEvent, Member
 
+# 02/17/21
+
+# The bot really should be using discord.ext.commands, but the previous dev didn't do that, 
+# so I'm left to continue where he left off. 
+# Quite interestingly, he parsed the commands himself
+
 import checks
 import data
 import defs

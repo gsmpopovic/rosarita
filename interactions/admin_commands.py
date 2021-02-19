@@ -49,37 +49,66 @@ async def remind(message: Message, split_content: List[str]):
 # Join music channel
 
 async def music(message: Message, split_content: List[str]):
+
+    #02/19/21
+    # I had to create a function because I was getting an annoying scope error with try-except
+    # and did not want to create a global variable 
+    async def connect_to_voice():
+
+        # This would be to find a particular channel based on name. 
+        # channel = utils.find(lambda x: x.name == 'music', message.guild.channels)
+        # print(channel)
+
+        # This will raise the exception if our bot is already in a specific voice channel 
+
+        channel = message.author.voice.channel
+
+            
+            #02/19/21
+            #Get the VoiceClient to which the bot will be connecting. 
+            # This was really annoying to figure out. 
+
+        try: 
+
+            voiceclient = await channel.connect()
+
+            return voiceclient
+
+        # I would have continued in this vein if I were aware of some 
+        # means by which I can auto-connect a user to a voice channel. 
+        # print(message.author.voice)
+        # await message.author.move_to(channel)
+
+        except: 
+            pass 
+            # await message.channel.send("Either you're not in a voice channel or I'm already connected. Which is it?")
+
+            # voiceclient.disconnect()
+
+        return voiceClient
+
+    # If we were successfully able to connect to a voice channel, then we're good.
+    voiceclient = await connect_to_voice()
     
-    # This would be to find a particular channel based on name. 
-    # channel = utils.find(lambda x: x.name == 'music', message.guild.channels)
-    # print(channel)
+    if not voiceclient.is_connected():
+            
+        return 
 
-    # This will raise the exception if our bot is already in a specific voice channel 
-    channel = message.author.voice.channel
-    print(message.author.voice.channel)
 
-    try:
-        await channel.connect()
+    # 02/19/21 
+    # Get our URL. 
 
-    except:
-        print("already connected")
-
-    # I would have continued in this vein if I were aware of some 
-    # means by which I can auto-connect a user to a voice channel. 
-    # print(message.author.voice)
-    # await message.author.move_to(channel)
+    url = split_content[2]
 
     YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist':'True'}
     FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
-    # voice = get(data.client.voice_clients, guild=ctx.guild)
-    voice = data.client.voice_clients
 
-    if not voice.is_playing():
-        with YoutubeDL(ydl_opts) as ydl:
-            info = ydl.extract_info(video_link, download=False)
+    if not voiceclient.is_playing():
+        with YoutubeDL(YDL_OPTIONS) as ydl:
+            info = ydl.extract_info(url, download=False)
         URL = info['formats'][0]['url']
-        voice.play(FFmpegPCMAudio(URL, **FFMPEG_OPTIONS))
-        voice.is_playing()
+        voiceclient.play(FFmpegPCMAudio(executable="C:/ffmpeg/bin/ffmpeg.exe", source=URL))
+        voiceclient.is_playing()
     else:
         await ctx.send("Already playing song")
         return

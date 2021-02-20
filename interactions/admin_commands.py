@@ -62,6 +62,23 @@ async def music(message: Message, split_content: List[str]):
 
         channel = message.author.voice.channel
 
+        #voiceclient = await voice_client.change_voice_state(channel)
+
+            voice_channel_list = message.guild.voice_channels
+
+            for vc in voice_channel_list:
+
+                if vc == channel: 
+
+                    await message.channel.send("I'm already connected")
+
+                    return
+
+                else 
+
+                    pass
+
+
             
             #02/19/21
             #Get the VoiceClient to which the bot will be connecting. 
@@ -80,12 +97,6 @@ async def music(message: Message, split_content: List[str]):
 
         except:
 
-
-            #voiceclient = await voice_client.change_voice_state(channel)
-
-            voice_channel_list = message.guild.voice_channels
-
-            for vc in voice_channel
             print("Error upon trying to connect to VC. Either user isn't in a voice channel, or R is already in that voice channel.")
 
             return voiceclient

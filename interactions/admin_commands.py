@@ -50,15 +50,16 @@ async def remind(message: Message, split_content: List[str]):
 
 async def music(message: Message, split_content: List[str]):
 
+    #voiceclient will either be a voiceclient object representing 
+    # a particular voice connection, i.e., with attributes like "channel"
+    # or, if the bot is already connected, an int being 0. 
     voiceclient = await functions.connect_to_voice(message, data.client) 
 
     print(type(voiceclient))
 
     if type(voiceclient) is int: 
-        print("this should execute if vc is an int. meaning, bot is playing")
+        print("Bot is already connected to voice channel, so we're exiting this function.")
         return
-
-
 
     if len(split_content) <= 4:
         target = split_content[2]

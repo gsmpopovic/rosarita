@@ -14,6 +14,7 @@ from discord import Message, Forbidden, Guild, Member, Role, User, NotFound, HTT
 
 from discord.ext import tasks, commands
 
+import functions 
 import checks 
 import data
 import defs
@@ -49,64 +50,15 @@ async def remind(message: Message, split_content: List[str]):
 
 async def music(message: Message, split_content: List[str]):
 
-    #02/19/21
-    # I had to create a function because I was getting an annoying scope error with try-except
-    # and did not want to create a global variable 
-    async def connect_to_voice():
+    voiceclient = await functions.connect_to_voice(message, data.client) 
 
-        # This would be to find a particular channel based on name. 
-        # channel = utils.find(lambda x: x.name == 'music', message.guild.channels)
-        # print(channel)
+    print(type(voiceclient))
 
-        # This will raise the exception if our bot is already in a specific voice channel 
-
-        channel = message.author.voice.channel
-
-        #voiceclient = await voice_client.change_voice_state(channel)
-
-            voice_channel_list = message.guild.voice_channels
-
-            for vc in voice_channel_list:
-
-                if vc == channel: 
-
-                    await message.channel.send("I'm already connected")
-
-                    return
-
-                else 
-
-                    pass
-
-
-            
-            #02/19/21
-            #Get the VoiceClient to which the bot will be connecting. 
-            # This was really annoying to figure out. 
-
-        try: 
-
-            voiceclient = await channel.connect()
-
-            return voiceclient
-
-        # I would have continued in this vein if I were aware of some 
-        # means by which I can auto-connect a user to a voice channel. 
-        # print(message.author.voice)
-        # await message.author.move_to(channel)
-
-        except:
-
-            print("Error upon trying to connect to VC. Either user isn't in a voice channel, or R is already in that voice channel.")
-
-            return voiceclient
-
-            # voiceclient.disconnect()
-
+    if type(voiceclient) is int: 
+        print("this should execute if vc is an int. meaning, bot is playing")
         return
 
-    # If we were successfully able to connect to a voice channel, then we're good.
-    voiceclient = await connect_to_voice()
+
 
     if len(split_content) <= 4:
         target = split_content[2]

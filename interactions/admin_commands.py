@@ -45,7 +45,6 @@ async def remind(message: Message, split_content: List[str]):
     # Roberta, remind me "something" in X (minutes, hours, days)
     # Roberta, remind me "something" at xx:xx AM/PM (timezone)
 
-
 # Join music channel
 
 async def music(message: Message, split_content: List[str]):
@@ -79,39 +78,53 @@ async def music(message: Message, split_content: List[str]):
         # print(message.author.voice)
         # await message.author.move_to(channel)
 
-        except: 
-            pass 
-            # await message.channel.send("Either you're not in a voice channel or I'm already connected. Which is it?")
+        except:
+
+            voiceclient = await data.client.guild.voice_client.change_voice_state(channel)
+
+            print("Error upon trying to connect to VC. Either user isn't in a voice channel, or R is already in that voice channel.")
+
+            return voiceclient
 
             # voiceclient.disconnect()
 
-        return voiceClient
+        return
 
     # If we were successfully able to connect to a voice channel, then we're good.
     voiceclient = await connect_to_voice()
-    
-    if not voiceclient.is_connected():
+
+    if len(split_content) <= 4:
+        target = split_content[2]
+
+        # 02/19/21 
+        # Get our URL. 
+
+        url = split_content[3]
+
+        YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist':'True'}
+        FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
+
+        if not voiceclient.is_playing():
+
+            if target=="play":
+                with YoutubeDL(YDL_OPTIONS) as ydl:
+                    info = ydl.extract_info(url, download=False)
+                URL = info['formats'][0]['url']
+                voiceclient.play(FFmpegPCMAudio(executable="C:/ffmpeg/bin/ffmpeg.exe", source=URL))
+                voiceclient.is_playing()
+
+            elif target=="resume":
+                pass
             
-        return 
+        else:
 
+            if target=="pause":
+                print("pause")
+            elif target == "stop":
+                print("stop")
 
-    # 02/19/21 
-    # Get our URL. 
-
-    url = split_content[2]
-
-    YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist':'True'}
-    FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
-
-    if not voiceclient.is_playing():
-        with YoutubeDL(YDL_OPTIONS) as ydl:
-            info = ydl.extract_info(url, download=False)
-        URL = info['formats'][0]['url']
-        voiceclient.play(FFmpegPCMAudio(executable="C:/ffmpeg/bin/ffmpeg.exe", source=URL))
-        voiceclient.is_playing()
-    else:
-        await ctx.send("Already playing song")
-        return
+            return
+                
 
 
 # Display all of the guilds where bot is a member. 

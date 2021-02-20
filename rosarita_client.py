@@ -4,6 +4,13 @@ from typing import List, Optional
 import discord
 from discord import Message, AppInfo, Guild, Forbidden, Role, RawReactionActionEvent, Member
 
+# -2/20/21 
+# I tried to make it such that R would inherit from the bot provided by discord.ext, BotBase, but 
+# this proved very difficult and frustrating 
+
+# from discord.ext import commands
+# from discord.ext.commands import bot  
+
 # 02/17/21
 
 # The bot really should be using discord.ext.commands, but the previous dev didn't do that, 
@@ -17,11 +24,12 @@ import my_parser
 from interactions import exact, loose, bot_help, starts_with, admin_commands, lite_commands, str_ops, reaction_messages
 from utils import emoji_ops, message_ops
 
-
+#class RosaritaClient(discord.Client, bot.BotBase):
 class RosaritaClient(discord.Client):
     ready = False
 
     async def on_ready(self):
+        
         if not self.ready:
             app_info: AppInfo = await self.application_info()
 

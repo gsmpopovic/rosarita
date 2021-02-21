@@ -76,11 +76,23 @@ async def music(message: Message, split_content: List[str]):
 
                     info = ydl.extract_info(url, download=False)
                     URL = info['formats'][0]['url']
+                
+                # queued_music = await data.queue_music(message, url)
+
+                # if len(queued_music) > 0: 
+
+                #     for song in queued_music:
+                #         print(f"song: {song}")
+                #         voiceclient.play(FFmpegPCMAudio(executable="C:/ffmpeg/bin/ffmpeg.exe", source=URL))
+                #         voiceclient.is_playing()
+                #         await asyncio.sleep(5000)
+
                 voiceclient.play(FFmpegPCMAudio(executable="C:/ffmpeg/bin/ffmpeg.exe", source=URL))
                 voiceclient.is_playing()
 
             elif target=="resume":
                 voiceclient.resume()
+                print("Song resuming.")
                 voiceclient.is_playing()
 
             
@@ -89,12 +101,15 @@ async def music(message: Message, split_content: List[str]):
             if target=="pause":
                 voiceclient.pause()
                 voiceclient.is_playing()
-                print("pause")
+                print("Song paused.")
 
             elif target == "stop":
                 voiceclient.stop()
                 voiceclient.is_playing()
-                print("stop")
+                print("Song stopped.")
+
+            # elif target == "play":
+            #     data.queued_music
                 
             return
                 

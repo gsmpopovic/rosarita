@@ -39,7 +39,7 @@ async def connect_to_voice(message, client):
                 # connected--but I need to check whether or not we're connected to perform any of the
                 # functions. So this print statement is here for error handling. 
 
-                print(f"I'm already connected to this voice channel, and the command was {message.content[2]}")
+                print(f"I'm already connected to this voice channel, and the command was {message.content}")
 
                 return voiceclient
                 # return 0

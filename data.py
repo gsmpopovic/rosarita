@@ -44,6 +44,11 @@ _reaction_messages: Dict[str, List[List[int]]] = {}
 _edits = []
 _deletes = []
 
+# 02/21/21
+# create a list to hold queued songs.
+
+# _queued = []
+
 
 creed = 0
 
@@ -54,6 +59,15 @@ def data_locked(func):
             return await func(*args, **kwargs)
 
     return wrapper
+
+#02/21/21
+# Create queue for queued music 
+
+# @data_locked
+# async def queue_music(message, url):
+#     _queued.append(url)
+#     await _save()
+#     return _queued
 
 # 02/05/21
 # Record edits 
@@ -327,6 +341,7 @@ async def list_all_reaction_messages() -> Dict[str, List[List[int]]]:
 @data_locked
 async def load():
     global _temp_bans, _temp_mutes, _warnings, _reaction_roles, _reaction_messages, _edits, _deletes
+    # global _queued
     with open('data.json', 'r') as f:
         data = json.load(f)
         if 'temp_bans' in data:
@@ -343,6 +358,8 @@ async def load():
             _edits = data['_edits']
         if '_deletes' in data:
             _deletes = data['_deletes']
+        # if '_queued' in data:
+        #     _queued = data['_queued']
 
 
 async def _save():
@@ -355,4 +372,7 @@ async def _save():
             '_reaction_messages': _reaction_messages,
             '_edits': _edits,
             '_deletes':_deletes
+
+            # 021/21/21
+            # '_queued':_queued
         }, f)

@@ -7,11 +7,15 @@ async def connect_to_voice(message, client):
     # channel = utils.find(lambda x: x.name == 'music', message.guild.channels)
     # print(channel)
 
-    # This will raise the exception if our bot is already in a specific voice channel 
+    # This will raise the exception if our user isn't in a voice channel, 
+    # i.e., if the type of our user's voiceclient is None
+
+    none_type = isinstance(message.author.voice, type(None))
+    if none_type: 
+        await message.channel.send("You're not in a voice channel, so I can't do that! B-baka!")
+        return 0
 
     channel = message.author.voice.channel
-    print(channel)
-    #voiceclient = await voice_client.change_voice_state(channel)
 
     # A list of the guild's voice channels
     voice_channel_list = message.guild.voice_channels
@@ -23,21 +27,26 @@ async def connect_to_voice(message, client):
     for voiceclient in client.voice_clients:
         
         for vc in voice_channel_list:
-            print(voiceclient)
-            print(vc)
+            # print(voiceclient)
+            # print(vc)
             # print(f"voice channel {vc}")
             # print(f"voice client {voiceclient.channel}")
 
 
             if channel == voiceclient.channel: 
 
-                await message.channel.send("I'm already connected")
+                # Admittedly this statement will print whenever we try to connect to the voice channel (if already)
+                # connected--but I need to check whether or not we're connected to perform any of the
+                # functions. So this print statement is here for error handling. 
 
-                return 0
+                print(f"I'm already connected to this voice channel, and the command was {message.content[2]}")
+
+                return voiceclient
+                # return 0
 
             else:
 
-                print("but the fucntions >>>>>>")
+                print("We're not already connected, so let's try to connect.")
                     
                 #02/19/21
                 #Get the VoiceClient to which the bot will be connecting. 
@@ -58,7 +67,9 @@ async def connect_to_voice(message, client):
 
                     print("Error upon trying to connect to VC. Either user isn't in a voice channel, or R is already in that voice channel.")
 
-                    return voiceclient
+                    #This is just a general error
+
+                    return 0
 
                     # voiceclient.disconnect()
 

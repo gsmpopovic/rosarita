@@ -58,16 +58,11 @@ async def music(message: Message, split_content: List[str]):
     print(type(voiceclient))
 
     if type(voiceclient) is int: 
-        print("Bot is already connected to voice channel, so we're exiting this function.")
+        print("User isn't in a voice channel.")
         return
 
     if len(split_content) <= 4:
         target = split_content[2]
-
-        # 02/19/21 
-        # Get our URL. 
-
-        url = split_content[3]
 
         YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist':'True'}
         FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
@@ -75,22 +70,32 @@ async def music(message: Message, split_content: List[str]):
         if not voiceclient.is_playing():
 
             if target=="play":
+
                 with YoutubeDL(YDL_OPTIONS) as ydl:
+                    url = split_content[3]
+
                     info = ydl.extract_info(url, download=False)
-                URL = info['formats'][0]['url']
+                    URL = info['formats'][0]['url']
                 voiceclient.play(FFmpegPCMAudio(executable="C:/ffmpeg/bin/ffmpeg.exe", source=URL))
                 voiceclient.is_playing()
 
             elif target=="resume":
-                pass
+                voiceclient.resume()
+                voiceclient.is_playing()
+
             
         else:
 
             if target=="pause":
+                voiceclient.pause()
+                voiceclient.is_playing()
                 print("pause")
-            elif target == "stop":
-                print("stop")
 
+            elif target == "stop":
+                voiceclient.stop()
+                voiceclient.is_playing()
+                print("stop")
+                
             return
                 
 

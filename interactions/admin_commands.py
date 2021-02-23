@@ -64,7 +64,9 @@ async def music(message: Message, split_content: List[str]):
     if len(split_content) <= 4:
         target = split_content[2]
 
+        # YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist':'True'}
         YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist':'True'}
+
         FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
 
         if not voiceclient.is_playing():
@@ -76,16 +78,20 @@ async def music(message: Message, split_content: List[str]):
 
                     info = ydl.extract_info(url, download=False)
                     URL = info['formats'][0]['url']
-                
-                # queued_music = await data.queue_music(message, url)
 
-                # if len(queued_music) > 0: 
+                    # queued_music = await data.queue_music(message, url)
 
-                #     for song in queued_music:
-                #         print(f"song: {song}")
-                #         voiceclient.play(FFmpegPCMAudio(executable="C:/ffmpeg/bin/ffmpeg.exe", source=URL))
-                #         voiceclient.is_playing()
-                #         await asyncio.sleep(5000)
+                    #     if len(queued_music) > 0: 
+                    #         print(queued_music)
+                    #         while True: 
+                    #             song = queued_music.unshift()
+                    #             print(f"song: {song}")
+                    #             info = ydl.extract_info(song, download=False)
+                    #             URL = info['formats'][0]['url']
+                    #             voiceclient.play(FFmpegPCMAudio(executable="C:/ffmpeg/bin/ffmpeg.exe", source=URL))
+                    #             voiceclient.is_playing()
+                    #             await asyncio.sleep(1)
+
 
                 voiceclient.play(FFmpegPCMAudio(executable="C:/ffmpeg/bin/ffmpeg.exe", source=URL))
                 voiceclient.is_playing()

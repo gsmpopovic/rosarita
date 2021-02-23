@@ -74,3 +74,21 @@ async def connect_to_voice(message, client):
                     # voiceclient.disconnect()
 
     return
+
+###########################################################
+# async def play_queued_songs(voiceclient, url): 
+
+#     songs = asyncio.Queue()
+#     play_next_song = asyncio.Event()
+
+#     async def audio_player_task():
+#         while True:
+#             play_next_song.clear()
+#             current = await songs.get()
+#             current.start()
+#             await play_next_song.wait()
+
+#         voiceclient.play(FFmpegPCMAudio(executable="C:/ffmpeg/bin/ffmpeg.exe", source=url), after="toggle_next")
+
+#         await songs.put(voiceclient)
+

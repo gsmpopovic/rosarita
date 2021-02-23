@@ -10,4 +10,6 @@ intents.presences = True
 client = RosaritaClient(intents=intents)
 # client.run(bot_token)
 
+#client.loop.create_task(audio_player_task())
+
 client.run("Nzg5Mjk4NDczNzM1ODE1MTg3.X9wBfA.alTDd3oKYtUAy8Ig88S6Gq1VT1w")

@@ -47,7 +47,7 @@ class RosaritaClient(discord.Client):
             asyncio.create_task(checks.check_creed()())
 
             self.ready = True
-            await self.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="@help"))
+            await self.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="@help"))
 
             print("Ready!")
 
@@ -146,7 +146,7 @@ class RosaritaClient(discord.Client):
         if not self.ready: 
             return 
 
-        await message.channel.send(f"{message.content} was deleted")
+        #await message.channel.send(f"{message.content} was deleted")
 
         await data.record_deletes(message)
 

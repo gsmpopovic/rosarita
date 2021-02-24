@@ -88,7 +88,14 @@ async def connect_to_voice(message, client):
 #             current.start()
 #             await play_next_song.wait()
 
-#         voiceclient.play(FFmpegPCMAudio(executable="C:/ffmpeg/bin/ffmpeg.exe", source=url), after="toggle_next")
+# This doesn't work because the currrent v of the Discord.py library does not return an instance of player
+#         player = await voiceclient.create_ytdl_Player(FFmpegPCMAudio(executable="C:/ffmpeg/bin/ffmpeg.exe", source=url), after="toggle_next")
 
 #         await songs.put(voiceclient)
+
+#client.loop.create_task(audio_player_task())
+
+# async def check_queue(data.client):
+#     return len(data.client.queue) > 0
+
 

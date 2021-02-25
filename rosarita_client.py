@@ -31,6 +31,10 @@ class RosaritaClient(discord.Client):
     async def on_ready(self):
         
         if not self.ready:
+
+            # self.songs = asyncio.Queue()
+            # play_next = asyncio.Event()
+            
             app_info: AppInfo = await self.application_info()
 
             data.owner = app_info.owner

@@ -1,6 +1,7 @@
 from discord import Intents
 from defs import bot_token
 from rosarita_client import RosaritaClient
+#from test_rosarita_with_playlist import RosaritaClient
 
 intents = Intents.default()
 intents.typing = False

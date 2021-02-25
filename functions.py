@@ -1,3 +1,7 @@
+
+from discord import FFmpegPCMAudio
+from youtube_dl import YoutubeDL
+
 #02/19/21
 # I had to create a function because I was getting an annoying scope error with try-except
 # and did not want to create a global variable 
@@ -74,8 +78,31 @@ async def connect_to_voice(message, client):
                     # voiceclient.disconnect()
 
     return
-
 ###########################################################
+song_queue = []
+FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
+YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist':'True'}
+
+#Search videos from key-words or links
+def search(arg):
+    try: requests.get("".join(arg))
+    except: arg = "".join(arg)
+    else: arg = "".join(arg)
+    with YoutubeDL(YDL_OPTIONS ) as ydl:
+        info = ydl.extract_info(f"ytsearch:{arg}", download=False)['entries'][0]
+        # info = ydl.extract_info(url, download=False)
+
+        
+    return {'source': info['formats'][0]['url'], 'title': info['title']}
+
+#Plays the next song in the queue
+def play_next(voiceclient):
+    if len(song_queue) > 1:
+        del song_queue[0]
+        voice.play(FFmpegPCMAudio(executable="C:/ffmpeg/bin/ffmpeg.exe", source=song_queue[0][source], **FFMPEG_OPTIONS), after=lambda e: play_next(voiceclient))
+        voice.is_playing()
+###########################################################
+
 # async def play_queued_songs(voiceclient, url): 
 
 #     songs = asyncio.Queue()

@@ -32,6 +32,10 @@ from interactions import time_ops, reaction_messages, str_ops
 
 from discord import FFmpegPCMAudio
 from youtube_dl import YoutubeDL
+
+#02/25/21
+
+import requests 
 ####################################
 ###################################
 # Remind me
@@ -63,38 +67,57 @@ async def music(message: Message, split_content: List[str]):
 
     if len(split_content) <= 4:
         target = split_content[2]
-
         # YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist':'True'}
+        # YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist':'True'}
+
+        # FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
+        FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
         YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist':'True'}
 
-        FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
+        if len(split_content)==4: 
+            url = split_content[3]
+            song = functions.search(url)
+            print(song)
+            functions.song_queue.append(song)
 
         if not voiceclient.is_playing():
 
             if target=="play":
-
-                with YoutubeDL(YDL_OPTIONS) as ydl:
-                    url = split_content[3]
-
-                    info = ydl.extract_info(url, download=False)
-                    URL = info['formats'][0]['url']
-
-                    # queued_music = await data.queue_music(message, url)
-
-                    #     if len(queued_music) > 0: 
-                    #         print(queued_music)
-                    #         while True: 
-                    #             song = queued_music.unshift()
-                    #             print(f"song: {song}")
-                    #             info = ydl.extract_info(song, download=False)
-                    #             URL = info['formats'][0]['url']
-                    #             voiceclient.play(FFmpegPCMAudio(executable="C:/ffmpeg/bin/ffmpeg.exe", source=URL))
-                    #             voiceclient.is_playing()
-                    #             await asyncio.sleep(1)
-
-
-                voiceclient.play(FFmpegPCMAudio(executable="C:/ffmpeg/bin/ffmpeg.exe", source=URL))
+                voiceclient.play(FFmpegPCMAudio(executable="C:/ffmpeg/bin/ffmpeg.exe", source=song['source'], **FFMPEG_OPTIONS), after=lambda e: functions.play_next(voiceclient))
                 voiceclient.is_playing()
+                # while True: 
+                #     play_next.clear()
+                #     current = await.get()
+                #     with YoutubeDL(YDL_OPTIONS) as ydl:
+                #         url = split_content[3]
+
+                #         info = ydl.extract_info(url, download=False)
+                #         URL = info['formats'][0]['url']
+                #         voiceclient.play(FFmpegPCMAudio(executable="C:/ffmpeg/bin/ffmpeg.exe", source=URL))
+                #         voiceclient.is_playing()
+
+                # with YoutubeDL(YDL_OPTIONS) as ydl:
+                #     url = split_content[3]
+
+                #     info = ydl.extract_info(url, download=False)
+                #     URL = info['formats'][0]['url']
+
+                #     # queued_music = await data.queue_music(message, url)
+
+                #     #     if len(queued_music) > 0: 
+                #     #         print(queued_music)
+                #     #         while True: 
+                #     #             song = queued_music.unshift()
+                #     #             print(f"song: {song}")
+                #     #             info = ydl.extract_info(song, download=False)
+                #     #             URL = info['formats'][0]['url']
+                #     #             voiceclient.play(FFmpegPCMAudio(executable="C:/ffmpeg/bin/ffmpeg.exe", source=URL))
+                #     #             voiceclient.is_playing()
+                #     #             await asyncio.sleep(1)
+
+                #await data.client.add_songs(url)
+                # voiceclient.play(FFmpegPCMAudio(executable="C:/ffmpeg/bin/ffmpeg.exe", source=URL))
+                # voiceclient.is_playing()
 
             elif target=="resume":
                 voiceclient.resume()

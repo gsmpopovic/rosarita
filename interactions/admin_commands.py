@@ -40,15 +40,60 @@ import requests
 ###################################
 # Remind me
 
+#03/01/21
+
+# @client.command(case_insensitive = True, aliases = ["remind", "remindme", "remind_me"])
+# @commands.bot_has_permissions(attach_files = True, embed_links = True)
+# async def reminder(ctx, time, *, reminder):
 async def remind(message: Message, split_content: List[str]):
 
-    subject = split_content[3]
-    time = float(split_content[5])
-    inter = split_content[6]
-    recurring = split_content[7] # yes or no
+    reminder = split_content[3]
+    time = split_content[5]
+    #inter = split_content[6]
+    #recurring = split_content[7] # yes or no
 
     # Roberta, remind me "something" in X (minutes, hours, days)
     # Roberta, remind me "something" at xx:xx AM/PM (timezone)
+
+    print(time)
+    print(reminder)
+    user = message.author
+    # embed = discord.Embed(color=0x55a7f7, timestamp=datetime.utcnow())
+    # embed.set_footer(text="If you have any questions, suggestions or bug reports, please join our support Discord Server: link hidden", icon_url=f"{client.user.avatar_url}")
+    seconds = 0
+    if reminder is None:
+        print("no reminder??")
+        #embed.add_field(name='Warning', value='Please specify what do you want me to remind you about.') # Error message
+    if time.lower().endswith("d"):
+        seconds += int(time[:-1]) * 60 * 60 * 24
+        counter = f"{seconds // 60 // 60 // 24} days"
+    if time.lower().endswith("h"):
+        seconds += int(time[:-1]) * 60 * 60
+        counter = f"{seconds // 60 // 60} hours"
+    elif time.lower().endswith("m"):
+        seconds += int(time[:-1]) * 60
+        counter = f"{seconds // 60} minutes"
+    elif time.lower().endswith("s"):
+        seconds += int(time[:-1])
+        counter = f"{seconds} seconds"
+    if seconds == 0:
+        pass
+        #embed.add_field(name='Warning',
+                        #value='Please specify a proper duration, send `reminder_help` for more information.')
+    elif seconds < 300:
+        pass
+        # embed.add_field(name='Warning',
+        #                 value='You have specified a too short duration!\nMinimum duration is 5 minutes.')
+    
+    elif seconds > 7776000:
+        pass
+        # embed.add_field(name='Warning', value='You have specified a too long duration!\nMaximum duration is 90 days.')
+    else:
+        await message.channel.send(f"Alright, I will remind you about {reminder} in {counter}.")
+        await asyncio.sleep(seconds)
+        await user.send(f"Hi, you asked me to remind you about {reminder} {counter} ago.")
+        return
+    #await ctx.send(embed=embed)
 
 # Join music channel
 
@@ -75,6 +120,13 @@ async def music(message: Message, split_content: List[str]):
         YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist':'True'}
 
         if len(split_content)==4: 
+            # try: 
+            #     song = functions.search(url)
+            #     print(song)
+            #     functions.song_queue.append(song)
+            # except: 
+            #     # We're already playing a song. 
+            #     print(" ")
             url = split_content[3]
             song = functions.search(url)
             print(song)
@@ -85,39 +137,6 @@ async def music(message: Message, split_content: List[str]):
             if target=="play":
                 voiceclient.play(FFmpegPCMAudio(executable="C:/ffmpeg/bin/ffmpeg.exe", source=song['source'], **FFMPEG_OPTIONS), after=lambda e: functions.play_next(voiceclient))
                 voiceclient.is_playing()
-                # while True: 
-                #     play_next.clear()
-                #     current = await.get()
-                #     with YoutubeDL(YDL_OPTIONS) as ydl:
-                #         url = split_content[3]
-
-                #         info = ydl.extract_info(url, download=False)
-                #         URL = info['formats'][0]['url']
-                #         voiceclient.play(FFmpegPCMAudio(executable="C:/ffmpeg/bin/ffmpeg.exe", source=URL))
-                #         voiceclient.is_playing()
-
-                # with YoutubeDL(YDL_OPTIONS) as ydl:
-                #     url = split_content[3]
-
-                #     info = ydl.extract_info(url, download=False)
-                #     URL = info['formats'][0]['url']
-
-                #     # queued_music = await data.queue_music(message, url)
-
-                #     #     if len(queued_music) > 0: 
-                #     #         print(queued_music)
-                #     #         while True: 
-                #     #             song = queued_music.unshift()
-                #     #             print(f"song: {song}")
-                #     #             info = ydl.extract_info(song, download=False)
-                #     #             URL = info['formats'][0]['url']
-                #     #             voiceclient.play(FFmpegPCMAudio(executable="C:/ffmpeg/bin/ffmpeg.exe", source=URL))
-                #     #             voiceclient.is_playing()
-                #     #             await asyncio.sleep(1)
-
-                #await data.client.add_songs(url)
-                # voiceclient.play(FFmpegPCMAudio(executable="C:/ffmpeg/bin/ffmpeg.exe", source=URL))
-                # voiceclient.is_playing()
 
             elif target=="resume":
                 voiceclient.resume()
@@ -136,10 +155,6 @@ async def music(message: Message, split_content: List[str]):
                 voiceclient.stop()
                 voiceclient.is_playing()
                 print("Song stopped.")
-
-            # elif target == "play":
-            #     data.queued_music
-                
             return
                 
 

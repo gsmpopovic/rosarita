@@ -82,6 +82,11 @@ class RosaritaClient(discord.Client):
                     if trigger in lite_commands.exact:
                         await lite_commands.exact[trigger](message)
                         return
+                    # 03/01/21
+                    # If the user is just a general member of the server 
+                    if trigger in nonadmin_commands.exact:
+                            await nonadmin_commands.exact[trigger](message, split_content,)
+                            return
                 if is_guild_owner:
                     for trigger in admin_commands.loose:
                         if trigger in content_lower:

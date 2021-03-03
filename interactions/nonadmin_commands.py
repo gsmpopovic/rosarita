@@ -104,23 +104,15 @@ async def music(message: Message, split_content: List[str]):
 # TRIGGERS 
 ##########################################################################################################
 exact = {
-    "clear": clear,
-    "unban": unban,
-    "warn": warn,
-    "owoify": owoify,
-
     # 02/05/21
     # Adding snipe trigger
-    # Adding memberof trigger
-    # Adding leaveguild trigger
+    # "snipe":snipe,
+    # "memberof":memberof,
+    # "leaveguild":leaveguild,
 
-    "snipe":snipe,
-    "memberof":memberof,
-    "leaveguild":leaveguild,
-
-    #02/05/21 
-    # Adding "music please" trigger
-    # Adding remind trigger 
-    "remind":remind, 
+    # #02/05/21 
+    # # Adding "music please" trigger
+    # # Adding remind trigger 
+    # "remind":remind, 
     "music":music
 }

@@ -27,6 +27,15 @@ async def connect_to_voice(message, client):
     if len(client.voice_clients) == 0:
         return await channel.connect() 
 
+    # for i in range(10):
+    #         for voiceclient in client.voice_clients:
+        
+    #             for vc in voice_channel_list:
+    #                 # print(voiceclient)
+    #                 # print(vc)
+    #                 print(f"this is a voice channel on the server: {vc}")
+    #                 print(f" this is one of the bot's voice client {voiceclient.channel}")
+
     # A list of the bot's voiceclients. These are objects so we have to access their attributes. 
     for voiceclient in client.voice_clients:
         
@@ -57,8 +66,8 @@ async def connect_to_voice(message, client):
                 # This was really annoying to figure out. 
 
                 try: 
-
-                    voiceclient = await channel.connect()
+                    
+                    voiceclient = await channel.connect(reconnect=True)
 
                     return voiceclient
 
@@ -68,6 +77,16 @@ async def connect_to_voice(message, client):
                 # await message.author.move_to(channel)
 
                 except:
+
+                    try: 
+                        # The connection will fail if our bot's voice client already has a connection to that
+                        #channel. So, if that is the case, we can just try to move to that channel. 
+                        await voiceclient.move_to(channel)
+
+                        return voiceclient
+
+                    except: 
+                        pass
 
                     print("Error upon trying to connect to VC. Either user isn't in a voice channel, or R is already in that voice channel.")
 
@@ -101,7 +120,7 @@ def play_next(voiceclient):
         print(song_queue[0])
         del song_queue[0]
         voiceclient.play(FFmpegPCMAudio(executable="C:/ffmpeg/bin/ffmpeg.exe", source=song_queue[0]['source'], **FFMPEG_OPTIONS), after=lambda e: play_next(voiceclient))
-        voice.is_playing()
+        voiceclient.is_playing()
 ###########################################################
 
 # async def play_queued_songs(voiceclient, url): 

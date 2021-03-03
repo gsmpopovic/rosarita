@@ -22,7 +22,12 @@ import data
 import defs
 import my_parser
 from interactions import exact, loose, bot_help, starts_with, admin_commands, lite_commands, str_ops, reaction_messages
+
+#03/02/21 
+# Import nonadmin commands 
+from interactions import nonadmin_commands
 from utils import emoji_ops, message_ops
+
 
 #class RosaritaClient(discord.Client, bot.BotBase):
 class RosaritaClient(discord.Client):
@@ -84,7 +89,7 @@ class RosaritaClient(discord.Client):
                         return
                     # 03/01/21
                     # If the user is just a general member of the server 
-                    if trigger in nonadmin_commands.exact:
+                    if not is_owner and trigger in nonadmin_commands.exact:
                             await nonadmin_commands.exact[trigger](message, split_content,)
                             return
                 if is_guild_owner:

@@ -1,6 +1,9 @@
 import asyncio
 from typing import List, Dict
 
+from datetime import datetime
+import re
+
 from discord import Message, Forbidden, Guild, Member, Role, User, NotFound, HTTPException, InvalidArgument, utils
 
 #imported utils from discord 02/05/21
@@ -47,53 +50,131 @@ import requests
 # async def reminder(ctx, time, *, reminder):
 async def remind(message: Message, split_content: List[str]):
 
-    reminder = split_content[3]
-    time = split_content[5]
+    # reminder = split_content[3]
+    # time = split_content[5]
+
+    # 03/03/21
+
+    #This regex will grab everything within parentheses and curly brackets respectively. 
+    #It returns a list object, so we'll have to 
+    # remind_subject = re.findall(r'\(.*?\)', message.content) 
+    # time_subject = re.findall(r'\{.*?\}', message.content)
+
+    #These will remove the parentheses and brackets via slicing. 
+    # reminder = remind_subject[0][1:-1]
+    # time = time_subject[0][1:-1]
+
+    #This regex is more effective than the above as it'll grab everything within outermost
+    #parentheses and brackets. So that's a win. 
+    reminder = re.search( "\((.*)\)" ,message.content).group(1)
+    time = re.search( "\{(.*)\}" ,message.content).group(1)
+
+    #Passing a set of curly braces inside the parentheses of the reminder will break the bot. 
+
+
+
     #inter = split_content[6]
     #recurring = split_content[7] # yes or no
 
     # Roberta, remind me "something" in X (minutes, hours, days)
     # Roberta, remind me "something" at xx:xx AM/PM (timezone)
 
-    print(time)
-    print(reminder)
     user = message.author
-    # embed = discord.Embed(color=0x55a7f7, timestamp=datetime.utcnow())
-    # embed.set_footer(text="If you have any questions, suggestions or bug reports, please join our support Discord Server: link hidden", icon_url=f"{client.user.avatar_url}")
-    seconds = 0
-    if reminder is None:
-        print("no reminder??")
-        #embed.add_field(name='Warning', value='Please specify what do you want me to remind you about.') # Error message
-    if time.lower().endswith("d"):
-        seconds += int(time[:-1]) * 60 * 60 * 24
-        counter = f"{seconds // 60 // 60 // 24} days"
-    if time.lower().endswith("h"):
-        seconds += int(time[:-1]) * 60 * 60
-        counter = f"{seconds // 60 // 60} hours"
-    elif time.lower().endswith("m"):
-        seconds += int(time[:-1]) * 60
-        counter = f"{seconds // 60} minutes"
-    elif time.lower().endswith("s"):
-        seconds += int(time[:-1])
-        counter = f"{seconds} seconds"
-    if seconds == 0:
-        pass
-        #embed.add_field(name='Warning',
-                        #value='Please specify a proper duration, send `reminder_help` for more information.')
-    elif seconds < 300:
-        pass
-        # embed.add_field(name='Warning',
-        #                 value='You have specified a too short duration!\nMinimum duration is 5 minutes.')
-    
-    elif seconds > 7776000:
-        pass
-        # embed.add_field(name='Warning', value='You have specified a too long duration!\nMaximum duration is 90 days.')
+
+    if (time.lower().endswith("s") or
+    time.lower().endswith("m") or 
+    time.lower().endswith("h") or
+    time.lower().endswith("d")):
+        # embed = discord.Embed(color=0x55a7f7, timestamp=datetime.utcnow())
+        # embed.set_footer(text="If you have any questions, suggestions or bug reports, please join our support Discord Server: link hidden", icon_url=f"{client.user.avatar_url}")
+        seconds = 0
+        if reminder is None or time is None:
+            message.channel.send("Hey! You didn't set a reminder. Try again!")
+            #embed.add_field(name='Warning', value='Please specify what do you want me to remind you about.') # Error message
+        if time.lower().endswith("d"):
+            seconds += int(time[:-1]) * 60 * 60 * 24
+            counter = f"{seconds // 60 // 60 // 24} days"
+        if time.lower().endswith("h"):
+            seconds += int(time[:-1]) * 60 * 60
+            counter = f"{seconds // 60 // 60} hours"
+        elif time.lower().endswith("m"):
+            seconds += int(time[:-1]) * 60
+            counter = f"{seconds // 60} minutes"
+        elif time.lower().endswith("s"):
+            seconds += int(time[:-1])
+            counter = f"{seconds} seconds"
+        if seconds == 0:
+            pass
+            #embed.add_field(name='Warning',
+                            #value='Please specify a proper duration, send `reminder_help` for more information.')
+        # elif seconds < 300:
+        #     pass
+            # embed.add_field(name='Warning',
+            #                 value='You have specified a too short duration!\nMinimum duration is 5 minutes.')
+        
+        elif seconds > 7776000:
+            pass
+            # embed.add_field(name='Warning', value='You have specified a too long duration!\nMaximum duration is 90 days.')
+        else:
+            await message.channel.send(f"Alright, I will remind you that, and I quote, \"{reminder}\" in {counter}.")
+            await asyncio.sleep(seconds)
+            await user.send(f"Hi, you asked me to remind you that, and I quote, \"{reminder}\" {counter} ago.")
+            return
+        #await ctx.send(embed=embed)
+
     else:
-        await message.channel.send(f"Alright, I will remind you about {reminder} in {counter}.")
-        await asyncio.sleep(seconds)
-        await user.send(f"Hi, you asked me to remind you about {reminder} {counter} ago.")
-        return
-    #await ctx.send(embed=embed)
+    # # If user enters military time (24:00) rather than a specific denomination of time.
+
+    #     #Get the current hour and minute from LOCAL MACHINE
+    #     current_hour = datetime.now().hour
+    #     current_minute = datetime.now().minute
+
+    #     #Get the time string, break into up nto hours and minutes
+    #     # e.g, 22:00 --> 10:00 PM 
+    #     hours = int(time[0:2])
+    #     minutes = int(time[2:])
+
+    #     # Special case if hours are zero, e.g., 00:15. 
+    #     # or minutes, e.g., 22:00. 
+
+    #     if minutes == 0 or hours == 0:
+    #         # Get the difference of minutes from 60. e.g., from 21:55 -> 22:00 is 5 minutes. 
+    #         if minutes == 0:
+    #             # Get the difference of the hours and minutes, convert to seconds. 
+    #             diff_hour = abs(current_hour-hours)*60*60
+    #             diff_min = abs(current_minute-60)*60
+    #             seconds = diff_min + diff_hour
+    #             #Await, ibid. 
+    #             print(seconds)
+
+    #             await message.channel.send(f"Alright, I will remind you that, and I quote, \"{reminder}\" at {time} hours.")
+    #             await asyncio.sleep(seconds)
+    #             await user.send(f"Hi, you asked me to remind you that, and I quote, \"{reminder}\" at {time} hours.")
+
+
+    #         else:
+    #             # Get the difference of minutes from 60. e.g., from 21:55 -> 22:00 is 5 minutes. 
+    #             diff_hour = abs(current_hour-24)*60*60
+    #             # diff_hour = 0
+
+    #             diff_min = abs(current_minute-minutes)*60
+    #             seconds = diff_min + diff_hour
+    #             print(seconds)
+    #             await message.channel.send(f"Alright, I will remind you that, and I quote, \"{reminder}\" at {time} hours.")
+    #             await asyncio.sleep(seconds)
+    #             await user.send(f"Hi, you asked me to remind you that, and I quote, \"{reminder}\" at {time} hours.")
+
+
+
+    #     else: 
+    #         diff_hour = abs(current_hour-hours)*60*60
+    #         diff_min = abs(current_minute-minutes)*60
+    #         seconds = diff_min + diff_hour
+    #         print(seconds)
+    #         await message.channel.send(f"Alright, I will remind you that, and I quote, \"{reminder}\" at {time} hours.")
+    #         await asyncio.sleep(seconds)
+    #         await user.send(f"Hi, you asked me to remind you that, and I quote, \"{reminder}\" at {time} hours.")
+
 
 # Join music channel
 

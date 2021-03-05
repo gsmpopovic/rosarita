@@ -1,6 +1,7 @@
 import asyncio
 import json
 import time
+from datetime import datetime
 
 # 02/05/21
 # Import sched
@@ -204,12 +205,18 @@ async def check_temps():
 
 
 @data_locked
-async def warn(member: Member, warning: str):
+async def warn(member: Member, warning: str, reason: str):
+    # To get date and time
+    date_time = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
     guild_id: str = str(member.guild.id)
     member_id: str = str(member.id)
+    print(guild_id in _warnings)
     if guild_id in _warnings:
+        print(member_id in _warnings[guild_id])
         if member_id in _warnings[guild_id]:
-            _warnings[guild_id][member_id].append(warning)
+            print(_warnings[guild_id][member_id])
+            print(warning)
+            _warnings[guild_id][member_id].append(f'"Date and time" => {date_time},\n "Warning" => {warning},\n "Reason" => {reason}')
 
         else:
             _warnings[guild_id][member_id] = [warning]

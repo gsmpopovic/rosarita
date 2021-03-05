@@ -338,17 +338,24 @@ async def warn(message: Message, split_content: List[str]):
 
     #03/04/21
     #Inc. regex to make my life easier. 
-    # warning = re.search( "\((.*)\)" ,message.content).group(1)
+    warn_occur = re.search( "\((.*)\)" ,message.content)
+    warning = warn_occur.group(1)
 
+    reason_occur = re.search( "\{(.*)\}" ,message.content)
+    reason = reason_occur.group(1)
+
+    print(reason)
+    print(warning)
+    print(len(split_content))
     if len(split_content) <= 4:
         warning = None
 
-        if not split_content[3].startswith("R:") and warning == None:
+        if reason_occur is None or reason == "" and warning == None:
             await message.channel.send("Hey! You need to enter a reason for warning me!")
             return  
         
-        reason_idx = split_content.index("R:")
-        reason = " ".join(split_content[reason_idx:])
+        # reason_idx = split_content.index("R:")
+        # reason = " ".join(split_content[reason_idx:])
         for member in message.mentions:
             if member != data.self_user and isinstance(member, Member):
                 if warning is None:
@@ -358,15 +365,58 @@ async def warn(message: Message, split_content: List[str]):
     # There needs to be a space before and after R: or else
     # the bot will throw an error. 
     else:
-        reason_idx = split_content.index("R:")
-        warning = " ".join(split_content[3:reason_idx])
-        reason = " ".join(split_content[reason_idx:])
+        # reason_idx = split_content.index("R:")
+        # warning = " ".join(split_content[3:reason_idx])
+        # reason = " ".join(split_content[reason_idx:])
         for member in message.mentions:
+            print(member)
             if member != data.self_user and isinstance(member, Member):
+                print(warning is None)
                 if warning is None:
                     await data.warn(member, message_ops.parse(defs.default_warn_message, member), reason)
                 else:
+                    print("executing warn")
                     await data.warn(member, warning, reason)
+
+# async def warn(message: Message, split_content: List[str]):
+
+    # GP: 
+    # If the length of our message is less than or equal to 3, 
+    # that means that the user didn't enter a warning message, so we'd use a default message
+    # e.g., @r warn @e 
+    # If less than 4, they didn't enter a reason, so we exit. 
+
+    #03/04/21
+    #Inc. regex to make my life easier. 
+    # warning = re.search( "\((.*)\)" ,message.content).group(1)
+
+    # if len(split_content) <= 4:
+    #     warning = None
+
+    #     if not split_content[3].startswith("R:") and warning == None:
+    #         await message.channel.send("Hey! You need to enter a reason for warning me!")
+    #         return  
+        
+    #     reason_idx = split_content.index("R:")
+    #     reason = " ".join(split_content[reason_idx:])
+    #     for member in message.mentions:
+    #         if member != data.self_user and isinstance(member, Member):
+    #             if warning is None:
+    #                 await data.warn(member, message_ops.parse(defs.default_warn_message, member))
+    #             else:
+    #                 await data.warn(member, warning)
+    # # There needs to be a space before and after R: or else
+    # # the bot will throw an error. 
+    # else:
+    #     reason_idx = split_content.index("R:")
+    #     warning = " ".join(split_content[3:reason_idx])
+    #     reason = " ".join(split_content[reason_idx:])
+    #     for member in message.mentions:
+    #         if member != data.self_user and isinstance(member, Member):
+    #             if warning is None:
+    #                 await data.warn(member, message_ops.parse(defs.default_warn_message, member), reason)
+    #             else:
+    #                 await data.warn(member, warning, reason)
 
 
 async def owoify(message: Message, _split_content: List[str]):
@@ -384,7 +434,43 @@ async def clear_warnings(message: Message):
         if member != data.self_user and isinstance(member, Member):
             await data.clear_warnings(member)
 
+# async def list_warnings(message: Message):
+#     mentions: List[Member] = []
+#     for member in message.mentions:
+#         if member != data.self_user and isinstance(member, Member):
+#             mentions.append(member)
+#     if len(mentions) == 0:
+#         warning_counts = await data.list_guild_warnings(message.guild)
+#         if warning_counts is None:
+#             await message.channel.send(f"No members have warnings on {message.guild}!")
+#         else:
+#             msg: List[str] = []
+#             for key in warning_counts:
+#                 # msg = str_ops.limited_content(f"**<@{key}>** -> {warning_counts[key]} warnings!", msg)
+#                 # If user's warnings aren't greater than or less than 1, use "warning"
+#                 if warning_counts[key] > 1 or warning_counts[key] < 1:
+#                     msg = str_ops.limited_content(f"**<@{key}>** -> {warning_counts[key]} warnings!", msg)
+#                 else:
+#                     msg = str_ops.limited_content(f"**<@{key}>** -> {warning_counts[key]} warning!", msg)
+#             for piece in msg:
+#                 await message.channel.send(piece)
+#     else:
+#         for member in mentions:
+#             #warning_counts = await data.list_member_warnings(member)
+#             warnings = await data.list_member_warnings(member)
+#             warning_counts = str(len(warnings))
+#             print(warning_counts)
+#             if warning_counts is None:
+#                 await message.channel.send(
+#                     f"{member.mention}'s warnings:\n"
+#                     "**None!**")
+#             else:
+#                 await message.channel.send(
+#                     f"{member.mention}'s warnings:\n--------------------\n" +
+#                     "\n--------------------\n".join(warnings) +
+#                     "\n--------------------")
 
+# Original version of this function 03/05/21
 async def list_warnings(message: Message):
     mentions: List[Member] = []
     for member in message.mentions:

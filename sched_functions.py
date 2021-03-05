@@ -8,6 +8,7 @@ async def schedule(message, reminder, time, *recurring):
 
     # Roberta, remind me ("something") in {Xm/h/d/s}
     # Roberta, remind me ("something") at { mm/dd/yy HH:MM}
+    # To make a reminder recurring, you pass [y] at the end. 
 
     user = message.author
 
@@ -47,10 +48,15 @@ async def schedule(message, reminder, time, *recurring):
             # embed.add_field(name='Warning', value='You have specified a too long duration!\nMaximum duration is 90 days.')
         else:
             await message.channel.send(f"Alright, I will remind you that, and I quote, \"{reminder}\" in {counter}.")
-            await asyncio.sleep(seconds)
-            await user.send(f"Hi, you asked me to remind you that, and I quote, \"{reminder}\" {counter} ago.")
-            return
-        #await ctx.send(embed=embed)
+            if recurring is None: 
+                await asyncio.sleep(seconds)
+                await user.send(f"Hi, you asked me to remind you that, and I quote, \"{reminder}\" {counter} ago.")
+                #await ctx.send(embed=embed)
+            else:
+                await asyncio.sleep(seconds)
+                await user.send(f"Hi, you asked me to remind you that, and I quote, \"{reminder}\" {counter} ago.")
+                    #await ctx.send(embed=embed)
+
 
     else:
         now = datetime.now()
@@ -63,8 +69,14 @@ async def schedule(message, reminder, time, *recurring):
         print(seconds)
 
         await message.channel.send(f"Alright, I will remind you that, and I quote, \"{reminder}\" at {hour} hours on {day}.")
-        await asyncio.sleep(seconds)
-        await user.send(f"Hi, you asked me to remind you that, and I quote, \"{reminder}\" at {hour} hours on {day}.")
+        if recurring is None:
+            await asyncio.sleep(seconds)
+            await user.send(f"Hi, you asked me to remind you that, and I quote, \"{reminder}\" at {hour} hours on {day}.")
+        else:
+            await asyncio.sleep(seconds)
+            await user.send(f"Hi, you asked me to remind you that, and I quote, \"{reminder}\" at {hour} hours on {day}.")
+       
+
 ######################################################################################################################
 async def schedule_recurring(message, reminder, time, *recurring):
     

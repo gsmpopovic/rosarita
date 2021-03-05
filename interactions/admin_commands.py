@@ -47,17 +47,19 @@ import requests
 #03/01/21
 
 async def canceltask(message: Message, split_content: List[str]):
-
+    # To cancel task user has to mention R in a channel and call the canceltask command.
+    #e.g.,
+    #@rosarita canceltask (Task-21)
     task = re.search( "\((.*)\)" ,message.content).group(1)
 
+    # Gets all of the tasks in our event loop. All pending tasks, i.e.
     tasks = asyncio.all_tasks(data.client.loop)
 
     for elem in tasks: 
         if task == elem.get_name():
             elem.cancel()
-            print("task cancelled")
+            message.author.send(f"Okay, I've cancelled {elem.get_name()} for you.")
             return 
-
 
 # @client.command(case_insensitive = True, aliases = ["remind", "remindme", "remind_me"])
 # @commands.bot_has_permissions(attach_files = True, embed_links = True)
@@ -84,13 +86,13 @@ async def remind(message: Message, split_content: List[str]):
     time = re.search( "\{(.*)\}" ,message.content).group(1)
     recurring = re.search("\[(.*)\]", message.content)
     print(recurring)
-    if not recurring[0]=="": 
+    if recurring is not None: 
         print("recurring")
         
         if recurring.group(1) == "y":
             print("recurring")
 
-            schedule_recurring = data.client.loop.create_task(sched_functions.schedule_recurring(message, reminder, time, recurring))
+            schedule_recurring = data.client.loop.create_task(sched_functions.schedule(message, reminder, time, recurring))
             print(dir(schedule_recurring))
             await user.send("To cancel this reminder, message me: @rosarita cancel (task name)")
             await user.send(f"Here's the name of this task: {schedule_recurring.get_name()}")
@@ -333,6 +335,10 @@ async def warn(message: Message, split_content: List[str]):
     # that means that the user didn't enter a warning message, so we'd use a default message
     # e.g., @r warn @e 
     # If less than 4, they didn't enter a reason, so we exit. 
+
+    #03/04/21
+    #Inc. regex to make my life easier. 
+    # warning = re.search( "\((.*)\)" ,message.content).group(1)
 
     if len(split_content) <= 4:
         warning = None

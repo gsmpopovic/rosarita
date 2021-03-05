@@ -152,6 +152,9 @@ class RosaritaClient(discord.Client):
                         await admin_commands.private_loose[trigger](message)
                         return
 
+    #03/05/21
+    #Added self-deletion upon event. 
+
     # 02/05/21
     # On message delete
     # Two positional arguments (because class), self and message object. 
@@ -176,6 +179,9 @@ class RosaritaClient(discord.Client):
             pass
             #nothing to save or clear.
 
+    #03/05/21
+    #Added self-deletion upon event.
+    
     # 02/05/21
     # On message edit
     # Three positional arguments, self, message_before, message_after. 

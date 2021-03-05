@@ -103,7 +103,6 @@ async def music(message: Message, split_content: List[str]):
             return
 ##########################################################################################################
 ##########################################################################################################
-
 # Remind me
 
 #03/01/21
@@ -123,10 +122,6 @@ async def canceltask(message: Message, split_content: List[str]):
             message.author.send(f"Okay, I've cancelled {elem.get_name()} for you.")
             return 
 
-
-# @client.command(case_insensitive = True, aliases = ["remind", "remindme", "remind_me"])
-# @commands.bot_has_permissions(attach_files = True, embed_links = True)
-# async def reminder(ctx, time, *, reminder):
 async def remind(message: Message, split_content: List[str]):
     user = message.author
     # reminder = split_content[3]
@@ -150,24 +145,39 @@ async def remind(message: Message, split_content: List[str]):
     recurring = re.search("\[(.*)\]", message.content)
     print(recurring)
     if recurring is not None: 
-        #print("recurring")
+        print("recurring")
         
         if recurring.group(1) == "y":
-            schedule_recurring = data.client.loop.create_task(sched_functions.schedule_recurring(message, reminder, time, recurring))
-            #print(dir(schedule_recurring))
-            await user.send("To cancel this reminder, message me: @rosarita cancel (task name)")
+            print("recurring")
+
+            schedule_recurring = data.client.loop.create_task(sched_functions.schedule(message, reminder, time, recurring))
+            print(dir(schedule_recurring))
+            await user.send("To cancel this reminder, message me: @rosarita canceltask (task name)")
             await user.send(f"Here's the name of this task: {schedule_recurring.get_name()}")
     else: 
-        #print("not recurring")
+        print("not recurring")
         await sched_functions.schedule(message, reminder, time, recurring)
+
 ##########################################################################################################
 # Snipe deleted or edited messages. 
 
+
 async def snipe(message: Message, split_content: List[str]):
+    #Command format:
+    #@rosarita snipe 1 deletes
+
+    max = 10
     items = int(split_content[2]) # The number of edits or deletes to snipe
-    target = split_content[3]
+    target = split_content[3].lower()
+
+    if items > max:
+        await message.channel.send("I can't snipe more than 10 edited/deleted messages at a time.")
+        return
+
     if target == "edits" or target == "deletes":
         await data.snipe(message, items, target)
+
+
 ##########################################################################################################
 # TRIGGERS 
 ##########################################################################################################

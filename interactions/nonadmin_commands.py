@@ -119,7 +119,7 @@ async def canceltask(message: Message, split_content: List[str]):
     for elem in tasks: 
         if task == elem.get_name():
             elem.cancel()
-            message.author.send(f"Okay, I've cancelled {elem.get_name()} for you.")
+            await message.author.send(f"Okay, I've cancelled {elem.get_name()} for you.")
             return 
 
 async def remind(message: Message, split_content: List[str]):

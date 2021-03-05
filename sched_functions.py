@@ -53,8 +53,9 @@ async def schedule(message, reminder, time, *recurring):
                 await user.send(f"Hi, you asked me to remind you that, and I quote, \"{reminder}\" {counter} ago.")
                 #await ctx.send(embed=embed)
             else:
-                await asyncio.sleep(seconds)
-                await user.send(f"Hi, you asked me to remind you that, and I quote, \"{reminder}\" {counter} ago.")
+                while True: 
+                    await asyncio.sleep(seconds)
+                    await user.send(f"Hi, you asked me to remind you that, and I quote, \"{reminder}\" {counter} ago.")
                     #await ctx.send(embed=embed)
 
 

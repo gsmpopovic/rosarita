@@ -171,7 +171,7 @@ class RosaritaClient(discord.Client):
         print("Waiting for 30 seconds upon messge delete.")
         await asyncio.sleep(30)
         print("Finished waiting after message delete. Now deleting.")
-        try 
+        try:
             data._deletes.clear()
             #print(data._deletes)
             await data._save()
@@ -181,7 +181,7 @@ class RosaritaClient(discord.Client):
 
     #03/05/21
     #Added self-deletion upon event.
-    
+
     # 02/05/21
     # On message edit
     # Three positional arguments, self, message_before, message_after. 
@@ -197,10 +197,10 @@ class RosaritaClient(discord.Client):
         await asyncio.sleep(30)
         print("Finished waiting after message edit. Now deleting.")
 
-        try
+        try:
             data._edits.clear()
             await data._save()
-        except
+        except:
             pass
             #nothing to save, or clear.
 

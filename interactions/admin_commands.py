@@ -376,6 +376,7 @@ async def warn(message: Message, split_content: List[str]):
                     await data.warn(member, message_ops.parse(defs.default_warn_message, member), reason)
                 else:
                     print("executing warn")
+                    # See commit history
                     await data.warn(member, warning, reason)
 
 # async def warn(message: Message, split_content: List[str]):

@@ -103,6 +103,7 @@ async def record_deletes(deleted_message):
     await _save()
 
 # 02/05/21
+# Updated 03/05/21
 # Snipe 
 
 @data_locked 
@@ -110,27 +111,36 @@ async def snipe(message, items, target):
     channel = message.channel
     # sniped = []
     if target == "edits":
-        if items < len(_edits):
+        if items <= len(_edits):
             # for i in n:
             #     sniped.append(_edits[i])
             # await message.channel.send(sniped)
-            i = 0
-            while i < items:
+            i = -1
+            j = 0
+            while j < items:
                 await message.channel.send(_edits[i])
-                i += 1
+                # i will iterate through the list backward. 
+                # j is just to break the loop. 
+
+                i += -1
+                j += 1
         else:
-            await message.channel.send("tHere aren't that many edits.")
+            await message.channel.send("tHere aren't that many edited messages.")
     else: 
-        if items < len(_deletes):
+        if items <= len(_deletes):
             # for i in n:
             #     sniped.append(_edits[i])
             # await message.channel.send(sniped)
-            i = 0
+            i = -1
+            j = 0
             while i < items:
                 await message.channel.send(_deletes[i])
-                i += 1
+                # i will iterate through the list backward. 
+                # j is just to break the loop. 
+                i += -1
+                j += 1
         else:
-            await message.channel.send("tHere aren't that many deletes.")
+            await message.channel.send("tHere aren't that many deleted messages.")
 
 
 

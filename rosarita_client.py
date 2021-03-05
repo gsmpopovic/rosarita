@@ -164,6 +164,18 @@ class RosaritaClient(discord.Client):
 
         await data.record_deletes(message)
 
+        # Delete all deleted messages after 30 seconds
+        print("Waiting for 30 seconds upon messge delete.")
+        await asyncio.sleep(30)
+        print("Finished waiting after message delete. Now deleting.")
+        try 
+            data._deletes.clear()
+            #print(data._deletes)
+            await data._save()
+        except:
+            pass
+            #nothing to save or clear.
+
     # 02/05/21
     # On message edit
     # Three positional arguments, self, message_before, message_after. 
@@ -175,6 +187,18 @@ class RosaritaClient(discord.Client):
         #await message_after.channel.send(f"{message_before.content} was edited to say {message_after.content}")
 
         await data.record_edits(message_before, message_after)
+        print("Waiting for 30 seconds upon messge edit.")
+        await asyncio.sleep(30)
+        print("Finished waiting after message edit. Now deleting.")
+
+        try
+            data._edits.clear()
+            await data._save()
+        except
+            pass
+            #nothing to save, or clear.
+
+
 
     async def on_raw_reaction_add(self, payload: RawReactionActionEvent):
         if not self.ready:

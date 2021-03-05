@@ -94,7 +94,7 @@ async def remind(message: Message, split_content: List[str]):
 
             schedule_recurring = data.client.loop.create_task(sched_functions.schedule(message, reminder, time, recurring))
             print(dir(schedule_recurring))
-            await user.send("To cancel this reminder, message me: @rosarita cancel (task name)")
+            await user.send("To cancel this reminder, message me: @rosarita canceltask (task name)")
             await user.send(f"Here's the name of this task: {schedule_recurring.get_name()}")
     else: 
         print("not recurring")
@@ -175,6 +175,8 @@ async def memberof(message: Message, split_content: List[str]):
 # Force the bot to leave a guild if a guild id is passed when this function is called. 
 
 async def leaveguild(message: Message, split_content: List[str]):
+    #guildid = re.search( "\((.*)\)" ,message.content).group(1)
+
     guild_id = split_content[2]
     for guild in data.client.guilds:
         if guild.id == int(guild_id):
@@ -184,8 +186,17 @@ async def leaveguild(message: Message, split_content: List[str]):
 # Snipe deleted or edited messages. 
 
 async def snipe(message: Message, split_content: List[str]):
+    #Command format:
+    #@rosarita snipe 1 deletes
+
+    max = 10
     items = int(split_content[2]) # The number of edits or deletes to snipe
-    target = split_content[3]
+    target = split_content[3].lower()
+
+    if items > max:
+        await message.channel.send("I can't snipe more than 10 edited/deleted messages at a time.")
+        return
+
     if target == "edits" or target == "deletes":
         await data.snipe(message, items, target)
 

@@ -80,10 +80,12 @@ async def schedule(message, reminder, time, *recurring):
         # get the current time
         current_time = tz.localize(datetime.now())
         print(current_time)
-        # get the time you want, ill just do 11:30 as an example
+
+        # get the time you want
         execution_time = current_time.replace(hour=hour, minute=minute, second=0)
-        delayed = 0
+        #delayed = 0
         print(execution_time)
+
         # move the day to tomorrow if the current time is past the execution time
         if execution_time.time() < current_time.time():
             execution_time = execution_time + timedelta(days=1)
@@ -102,13 +104,13 @@ async def schedule(message, reminder, time, *recurring):
         # print(recurring)
         # print(type(recurring))
         await message.channel.send(f"Alright, I will remind you that, and I quote, \"{reminder}\" at {hour}:{str(minute).zfill(2)} hours.")
-        await message.channel.send(f"")
 
         #for some reason recurring is now a tuple. so we have to index it.
         if recurring[0] is None:
             await asyncio.sleep(seconds)
             await user.send(f"Hi, you asked me to remind you that, and I quote, \"{reminder}\" at {hour}:{str(minute).zfill(2)} hours.")
         else:
+
             i = 0
             seconds_day = 86400
             #print("am/pm recurring")
@@ -126,8 +128,8 @@ async def schedule(message, reminder, time, *recurring):
                 # the bot should sleep to the number of seconds in 24 hours. I initially added the original number of 
                 #seconds, but that was just a logic error. 
 
-                await user.send(f"Hi, you asked me to remind you at {hour}:{str(minute).zfill(2)} hours that:")
-                await user.send(f"\"{reminder}\"")
+                await user.send(f"Hi, you asked me to remind you that, and I quote, \"{reminder}\" at {hour}:{str(minute).zfill(2)} hours.")
+
                 print(seconds)
                 await asyncio.sleep(seconds)
                 i += 1

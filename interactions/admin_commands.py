@@ -85,19 +85,16 @@ async def remind(message: Message, split_content: List[str]):
     reminder = re.search( "\((.*)\)" ,message.content).group(1)
     time = re.search( "\{(.*)\}" ,message.content).group(1)
     recurring = re.search("\[(.*)\]", message.content)
-    print(recurring)
-    if recurring is not None: 
-        print("recurring")
-        
+
+    if recurring is not None:
+        #if not none and the content of [y] is the char y       
         if recurring.group(1) == "y":
-            print("recurring")
 
             schedule_recurring = data.client.loop.create_task(sched_functions.schedule(message, reminder, time, recurring))
-            print(dir(schedule_recurring))
+            # print(dir(schedule_recurring))
             await user.send("To cancel this reminder, message me: @rosarita canceltask (task name)")
             await user.send(f"Here's the name of this task: {schedule_recurring.get_name()}")
     else: 
-        print("not recurring")
         await sched_functions.schedule(message, reminder, time, recurring)
 
 

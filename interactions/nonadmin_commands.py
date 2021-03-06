@@ -103,6 +103,8 @@ async def music(message: Message, split_content: List[str]):
             return
 ##########################################################################################################
 ##########################################################################################################
+#03/05/21
+# I think it's actually done.
 # Remind me
 
 #03/01/21
@@ -122,6 +124,9 @@ async def canceltask(message: Message, split_content: List[str]):
             await message.author.send(f"Okay, I've cancelled {elem.get_name()} for you.")
             return 
 
+# @client.command(case_insensitive = True, aliases = ["remind", "remindme", "remind_me"])
+# @commands.bot_has_permissions(attach_files = True, embed_links = True)
+# async def reminder(ctx, time, *, reminder):
 async def remind(message: Message, split_content: List[str]):
     user = message.author
     # reminder = split_content[3]
@@ -143,20 +148,74 @@ async def remind(message: Message, split_content: List[str]):
     reminder = re.search( "\((.*)\)" ,message.content).group(1)
     time = re.search( "\{(.*)\}" ,message.content).group(1)
     recurring = re.search("\[(.*)\]", message.content)
-    print(recurring)
-    if recurring is not None: 
-        print("recurring")
-        
+
+    if recurring is not None:
+        #if not none and the content of [y] is the char y       
         if recurring.group(1) == "y":
-            print("recurring")
 
             schedule_recurring = data.client.loop.create_task(sched_functions.schedule(message, reminder, time, recurring))
-            print(dir(schedule_recurring))
+            # print(dir(schedule_recurring))
             await user.send("To cancel this reminder, message me: @rosarita canceltask (task name)")
             await user.send(f"Here's the name of this task: {schedule_recurring.get_name()}")
     else: 
-        print("not recurring")
         await sched_functions.schedule(message, reminder, time, recurring)
+
+
+##########################################################################################################
+# # Remind me
+
+# #03/01/21
+
+# async def canceltask(message: Message, split_content: List[str]):
+#     # To cancel task user has to mention R in a channel and call the canceltask command.
+#     #e.g.,
+#     #@rosarita canceltask (Task-21)
+#     task = re.search( "\((.*)\)" ,message.content).group(1)
+
+#     # Gets all of the tasks in our event loop. All pending tasks, i.e.
+#     tasks = asyncio.all_tasks(data.client.loop)
+
+#     for elem in tasks: 
+#         if task == elem.get_name():
+#             elem.cancel()
+#             await message.author.send(f"Okay, I've cancelled {elem.get_name()} for you.")
+#             return 
+
+# async def remind(message: Message, split_content: List[str]):
+#     user = message.author
+#     # reminder = split_content[3]
+#     # time = split_content[5]
+
+#     # 03/03/21
+
+#     #This regex will grab everything within parentheses and curly brackets respectively. 
+#     #It returns a list object, so we'll have to 
+#     # remind_subject = re.findall(r'\(.*?\)', message.content) 
+#     # time_subject = re.findall(r'\{.*?\}', message.content)
+
+#     #These will remove the parentheses and brackets via slicing. 
+#     # reminder = remind_subject[0][1:-1]
+#     # time = time_subject[0][1:-1]
+
+#     #This regex is more effective than the above as it'll grab everything within outermost
+#     #parentheses and brackets. So that's a win. 
+#     reminder = re.search( "\((.*)\)" ,message.content).group(1)
+#     time = re.search( "\{(.*)\}" ,message.content).group(1)
+#     recurring = re.search("\[(.*)\]", message.content)
+#     print(recurring)
+#     if recurring is not None: 
+#         print("recurring")
+        
+#         if recurring.group(1) == "y":
+#             print("recurring")
+
+#             schedule_recurring = data.client.loop.create_task(sched_functions.schedule(message, reminder, time, recurring))
+#             print(dir(schedule_recurring))
+#             await user.send("To cancel this reminder, message me: @rosarita canceltask (task name)")
+#             await user.send(f"Here's the name of this task: {schedule_recurring.get_name()}")
+#     else: 
+#         print("not recurring")
+#         await sched_functions.schedule(message, reminder, time, recurring)
 
 ##########################################################################################################
 # Snipe deleted or edited messages. 

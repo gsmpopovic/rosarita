@@ -1,6 +1,9 @@
 import asyncio
 from datetime import datetime
+from datetime import timedelta
 import re
+
+import pytz
 
 async def schedule(message, reminder, time, *recurring):
     
@@ -60,23 +63,75 @@ async def schedule(message, reminder, time, *recurring):
 
 
     else:
-        now = datetime.now()
-        date = datetime.strptime(time, '%m/%d/%Y %H:%M')
-        # %I is for 12 hour clock and %p is for AM/PM
-        day = date.strftime('%m/%d/%Y')
-        hour = date.strftime('%H:%M')
-        diff = date-now
-        seconds = diff.total_seconds()
-        print(seconds)
+        # now = datetime.now()
+        date = datetime.strptime(time, '%H:%M')
+        # # %I is for 12 hour clock and %p is for AM/PM
+        # day = date.strftime('%m/%d/%Y')
+        hour = int(date.strftime('%H'))
+        minute = int(date.strftime('%M'))
+        # diff = date-now
+        # seconds = diff.total_seconds()
+        # print(seconds)
 
-        await message.channel.send(f"Alright, I will remind you that, and I quote, \"{reminder}\" at {hour} hours on {day}.")
-        if recurring is None:
+     # You could probably do this without localizing but I needed to
+        # tz = pytz.timezone("US/Pacific")
+        tz = pytz.timezone("US/Eastern")
+        
+        # get the current time
+        current_time = tz.localize(datetime.now())
+        print(current_time)
+        # get the time you want, ill just do 11:30 as an example
+        execution_time = current_time.replace(hour=hour, minute=minute, second=0)
+        delayed = 0
+        print(execution_time)
+        # move the day to tomorrow if the current time is past the execution time
+        if execution_time.time() < current_time.time():
+            execution_time = execution_time + timedelta(days=1)
+            # The delayed variable is to offset the bug later in the code. I need a way to ensure that only
+            # reminders called on the same day will be offset so that they fire 24 hours after they were initially fired
+            # e.g., if a command were set at 5:00 PM to fire at 5:10 PM, I'd need to wait 24 hours after firing, i.e.,
+            # reset the seconds variable, to avoid being stuck at 10 minute intervals.
+            
+            # delayed += 1
+            # print(delayed)
+
+        # This is the total amount of seconds between what time it is right now and the next time we want to
+        # execute the task
+        seconds = (execution_time - current_time).total_seconds()
+        # print(seconds)
+        # print(recurring)
+        # print(type(recurring))
+        await message.channel.send(f"Alright, I will remind you that, and I quote, \"{reminder}\" at {hour}:{str(minute).zfill(2)} hours.")
+        await message.channel.send(f"")
+
+        #for some reason recurring is now a tuple. so we have to index it.
+        if recurring[0] is None:
             await asyncio.sleep(seconds)
-            await user.send(f"Hi, you asked me to remind you that, and I quote, \"{reminder}\" at {hour} hours on {day}.")
+            await user.send(f"Hi, you asked me to remind you that, and I quote, \"{reminder}\" at {hour}:{str(minute).zfill(2)} hours.")
         else:
-            while True: 
+            i = 0
+            seconds_day = 86400
+            #print("am/pm recurring")
+            while True:
+                # if i == 1 and not delayed == 1:
+                if i == 1:
+                    seconds = seconds_day
+                    print("i is 1")
+                # 03/05/21
+                # There's an interesting bug -- the bot will execute using the originally allotted numbers of seconds
+                # So, add the equivalent of a day.
+                # The bug is this: if it's 10:29 PM, and I set it to remind me at 10:30 PM, 
+                # the bot will save that difference in seconds as the interval at which it should run for every reminder
+                #rather than running at 10:30 PM every day. So, when the reminder runs, set the number of seconds
+                # the bot should sleep to the number of seconds in 24 hours. I initially added the original number of 
+                #seconds, but that was just a logic error. 
+
+                await user.send(f"Hi, you asked me to remind you at {hour}:{str(minute).zfill(2)} hours that:")
+                await user.send(f"\"{reminder}\"")
+                print(seconds)
                 await asyncio.sleep(seconds)
-                await user.send(f"Hi, you asked me to remind you that, and I quote, \"{reminder}\" at {hour} hours on {day}.")
+                i += 1
+                print(i)
         
 
 ######################################################################################################################

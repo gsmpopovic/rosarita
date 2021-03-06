@@ -220,19 +220,19 @@ async def warn(member: Member, warning: str, reason: str):
     date_time = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
     guild_id: str = str(member.guild.id)
     member_id: str = str(member.id)
-    print(guild_id in _warnings)
+    # print(guild_id in _warnings)
     if guild_id in _warnings:
-        print(member_id in _warnings[guild_id])
+        # print(member_id in _warnings[guild_id])
         if member_id in _warnings[guild_id]:
-            print(_warnings[guild_id][member_id])
-            print(warning)
+            # print(_warnings[guild_id][member_id])
+            # print(warning)
             _warnings[guild_id][member_id].append(f'"Date and time" => {date_time},\n "Warning" => {warning},\n "Reason" => {reason}')
 
         else:
-            _warnings[guild_id][member_id] = [warning]
+            _warnings[guild_id][member_id] = [f'"Date and time" => {date_time},\n "Warning" => {warning},\n "Reason" => {reason}']
 
     else:
-        _warnings[guild_id] = {member_id: [warning]}
+        _warnings[guild_id] = {member_id: f'"Date and time" => {date_time},\n "Warning" => {warning},\n "Reason" => {reason}'}
     await _save()
 
 
@@ -240,7 +240,9 @@ async def warn(member: Member, warning: str, reason: str):
 async def clear_warnings(member: Member):
     guild_id: str = str(member.guild.id)
     member_id: str = str(member.id)
+    #print( guild_id in _warnings and member_id in _warnings[guild_id])
     if guild_id in _warnings and member_id in _warnings[guild_id]:
+        #print(_warnings[guild_id][member_id])
         del _warnings[guild_id][member_id]
         await _save()
 

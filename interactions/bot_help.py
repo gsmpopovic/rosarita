@@ -6,6 +6,8 @@ import defs
 
 def do_help(is_owner: bool, is_guild_owner: bool, is_dm: bool) -> List[str]:
     content: List[str] = []
+    interval="x s/m/h/d"
+    hour="HH:MM"
     if is_dm:
         if is_owner:
             content.append(f"\t**Commands:**\n*(the brackets `[]` are **not** part of the commands)*"
@@ -19,9 +21,10 @@ def do_help(is_owner: bool, is_guild_owner: bool, is_dm: bool) -> List[str]:
                            f"\n**---===---Admin commands---===---**")
             content.append(
                 f"\n**---Warnings---**"
-                f"\n[{data.self_mention}` warn @user warning_message`]"
+                f"\n[{data.self_mention}` warn @user (warning_message) {'reason'}`]"
                 f"\n\tWarns mentioned user."
                 f"\n\tWarning message will be either `warning_message` or a default message if none is given."
+                f"\n\Requires the parameter {'reason'}, i.e., a reason entered between curly braces."
                 f"\n[{data.self_mention}` remove warnings @user`] or [{data.self_mention}` unwarn @user`]"
                 f"\n\tRemoves all warnings for mentioned user."
                 f"\n[{data.self_mention}` list warnings`] or [{data.self_mention}` list warnings @user`]"
@@ -89,4 +92,32 @@ def do_help(is_owner: bool, is_guild_owner: bool, is_dm: bool) -> List[str]:
             f"\n-> UwU"
             f"\n-> I bet you didn't know, but you can also ask me for **help**!"
         )
+        content.append(
+            f"**---===---Music commands---===---**"
+            f"\n^^^ {data.self_mention} play https://www.youtube.com/some-video-url ^^^"
+            f"\n <<< {defs.readable_bot_name} will join the voice channel which message author is currently in,"
+            F"\n and play the song given in the URL. Message author *must* be in a voice channel. <<<"
+            F"\n If a song is already playing, the URL will be passed to a queue. <<<"
+            f"\n^^^ {data.self_mention} pause ^^^"
+            f"\n <<< {defs.readable_bot_name} will pause the song currently playing. <<<"
+            f"\n^^^ {data.self_mention} resume ^^^"
+            f"\n <<< {defs.readable_bot_name} will resume the song that was paused. <<<"
+            f"\n^^^ {data.self_mention} stop ^^^"
+            f"\n <<< {defs.readable_bot_name} will cease playing and exit queue. <<<"
+        )
+        content.append(
+            f"**---===--- Scheduling commands---===---**"
+            f"\n^^^ {data.self_mention} remind me ('something here') in {interval} [y] ^^^"
+            F"\n<<< {defs.readable_bot_name} will DM message author with the content set in parentheses () at interval set in braces, s/m/h/d stands for seconds, minutes, etc. <<<"
+            F"\n<<< [y] is an optional parameter and designates that this reminder will be recurring, i.e., for the interval set by the message author.<<<"
+
+            f"\n^^^ {data.self_mention} remind me ('something here') at {hour} [y] ^^^"
+            F"\n<<< {defs.readable_bot_name} will DM message author with the content set in parentheses () at time (24-hour clock) set in braces, HH/MM stands for hours and minutes, e.g., 22:00 for 10:00 PM, etc. <<<"
+            F"\n<<< [y] is an optional parameter and designates that this reminder will be recurring, i.e., every day at the hour set by the message author.<<<"
+            
+            f"\n^^^ {data.self_mention} canceltask (Task-Name) ^^^"
+            f"\n<<< When the recurring flag is set by the message author, {defs.readable_bot_name} will DM them and send the name of the task created by this flag., i.e., the recurring reminder. To cancel the reminder, to stop it from recurring, the author must invoke the above command in a channel. <<<"
+            f"\n <<< The name of the task will always be something to the effect of, 'Task-Number'. <<<"
+            
+            )
     return content

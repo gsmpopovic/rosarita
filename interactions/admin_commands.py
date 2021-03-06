@@ -371,34 +371,25 @@ async def warn(message: Message, split_content: List[str]):
     reason_occur = re.search( "\{(.*)\}" ,message.content)
     reason = reason_occur.group(1)
 
-    print(reason)
-    print(warning)
-    print(len(split_content))
-    if len(split_content) <= 4:
+
+    if warn_occur is None or warn_occur[0]=="":
+        print("warning is none")
         warning = None
 
         if reason_occur is None or reason == "" and warning == None:
             await message.channel.send("Hey! You need to enter a reason for warning me!")
             return  
-        
-        # reason_idx = split_content.index("R:")
-        # reason = " ".join(split_content[reason_idx:])
+
         for member in message.mentions:
             if member != data.self_user and isinstance(member, Member):
                 if warning is None:
                     await data.warn(member, message_ops.parse(defs.default_warn_message, member))
                 else:
                     await data.warn(member, warning)
-    # There needs to be a space before and after R: or else
-    # the bot will throw an error. 
     else:
-        # reason_idx = split_content.index("R:")
-        # warning = " ".join(split_content[3:reason_idx])
-        # reason = " ".join(split_content[reason_idx:])
+        print("warning is not none")
         for member in message.mentions:
-            print(member)
             if member != data.self_user and isinstance(member, Member):
-                print(warning is None)
                 if warning is None:
                     await data.warn(member, message_ops.parse(defs.default_warn_message, member), reason)
                 else:

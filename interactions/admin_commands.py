@@ -215,6 +215,8 @@ async def clear(message: Message, split_content: List[str]):
             await msg.delete()
         except Forbidden:
             pass
+##########################################################################################################
+##########################################################################################################
 
 async def unban(message: Message, _split_content: List[str]):
     if len(_split_content) <= 2:
@@ -236,6 +238,8 @@ async def unban(message: Message, _split_content: List[str]):
         except Forbidden:
             await message.channel.send(f"Couldn't unban {user.mention}. Not enough permissions.")
 
+##########################################################################################################
+##########################################################################################################
 
 async def temp_ban(message: Message):
     seconds: int = time_ops.parse_time(message.content)
@@ -256,6 +260,8 @@ async def temp_ban(message: Message):
     await asyncio.sleep(defs.ban_message_wait)
     await message.channel.send(defs.post_temp_ban_message)
 
+##########################################################################################################
+##########################################################################################################
 
 async def ban(message: Message):
     for member in message.mentions:
@@ -269,6 +275,8 @@ async def ban(message: Message):
     await asyncio.sleep(defs.ban_message_wait)
     await message.channel.send(defs.post_ban_message)
 
+##########################################################################################################
+##########################################################################################################
 
 async def kick(message: Message):
     for member in message.mentions:
@@ -282,6 +290,9 @@ async def kick(message: Message):
                 await message.guild.kick(member)
             except Forbidden:
                 await message.channel.send(f"Couldn't kick {member.mention}. Not enough permissions.")
+
+##########################################################################################################
+##########################################################################################################
 
 
 async def temp_mute(message: Message):
@@ -302,6 +313,8 @@ async def temp_mute(message: Message):
                     except Forbidden:
                         await message.channel.send(f"Couldn't mute {member.mention}. Not enough permissions.")
 
+##########################################################################################################
+##########################################################################################################
 
 async def mute(message: Message):
     guild: Guild = message.guild
@@ -316,6 +329,9 @@ async def mute(message: Message):
                         await member.add_roles(role)
                     except Forbidden:
                         await message.channel.send(f"Couldn't mute {member.mention}. Not enough permissions.")
+
+##########################################################################################################
+##########################################################################################################
 
 
 async def unmute(message: Message):
@@ -336,12 +352,15 @@ async def unmute(message: Message):
 # Function def in its original form: 
 # async def warn(message: Message, split_content: List[str]):
 
+##########################################################################################################
+##########################################################################################################
+
 async def warn(message: Message, split_content: List[str]):
 
     # GP: 
     # If the length of our message is less than or equal to 3, 
     # that means that the user didn't enter a warning message, so we'd use a default message
-    # e.g., @r warn @e 
+    # e.g., @r warn @e (warning) {reason}
     # If less than 4, they didn't enter a reason, so we exit. 
 
     #03/04/21
@@ -383,7 +402,7 @@ async def warn(message: Message, split_content: List[str]):
                 if warning is None:
                     await data.warn(member, message_ops.parse(defs.default_warn_message, member), reason)
                 else:
-                    print("executing warn")
+                    print(f"Warning {member}")
                     # See commit history
                     await data.warn(member, warning, reason)
 
@@ -427,6 +446,8 @@ async def warn(message: Message, split_content: List[str]):
     #             else:
     #                 await data.warn(member, warning, reason)
 
+##########################################################################################################
+##########################################################################################################
 
 async def owoify(message: Message, _split_content: List[str]):
     async with data.owoify_lock:
@@ -437,6 +458,8 @@ async def owoify(message: Message, _split_content: List[str]):
             data.owoified_channels.add(message.channel.id)
             await message.channel.send(defs.owoifying_message)
 
+##########################################################################################################
+##########################################################################################################
 
 async def clear_warnings(message: Message):
     for member in message.mentions:
@@ -479,6 +502,9 @@ async def clear_warnings(message: Message):
 #                     "\n--------------------\n".join(warnings) +
 #                     "\n--------------------")
 
+##########################################################################################################
+##########################################################################################################
+
 # Original version of this function 03/05/21
 async def list_warnings(message: Message):
     mentions: List[Member] = []
@@ -513,6 +539,9 @@ async def list_warnings(message: Message):
                     "\n--------------------\n".join(warning_counts) +
                     "\n--------------------")
 
+##########################################################################################################
+##########################################################################################################
+
 
 async def private_list_warnings(message: Message):
     mention: int
@@ -537,6 +566,8 @@ async def private_list_warnings(message: Message):
             for msg in messages:
                 await message.channel.send(msg)
 
+##########################################################################################################
+##########################################################################################################
 
 async def add_reaction_role_corret_format(message: Message, error: str):
     await message.channel.send(f"Error: {error}\n"
@@ -544,6 +575,8 @@ async def add_reaction_role_corret_format(message: Message, error: str):
                                f"where `role_id` should be the role's ID (a number)\n"
                                f"and `emoji` should be an emoji :white_check_mark:")
 
+##########################################################################################################
+##########################################################################################################
 
 async def add_reaction_role(message: Message, split_content: List[str]):
     if len(split_content) < 5:
@@ -571,6 +604,8 @@ async def add_reaction_role(message: Message, split_content: List[str]):
     if await data.should_update_reaction_messages(guild_id):
         await reaction_messages.update_reaction_messages(message.guild)
 
+##########################################################################################################
+##########################################################################################################
 
 async def remove_reaction_role(message: Message, split_content: List[str]):
     found_int: bool = False
@@ -589,6 +624,8 @@ async def remove_reaction_role(message: Message, split_content: List[str]):
         await message.channel.send(f"Correct command format: {data.self_mention}` remove reaction role role_id`,\n"
                                    f"where `role_id` should be the role's ID (a number)")
 
+##########################################################################################################
+##########################################################################################################
 
 async def list_reaction_roles(message: Message):
     emoji_roles: Dict[str, str] = await data.list_reaction_roles(str(message.guild.id))
@@ -604,6 +641,8 @@ async def list_reaction_roles(message: Message):
                 response += f"\n{emoji} {role_id} -> @{role.name}"
         await message.channel.send(response)
 
+##########################################################################################################
+##########################################################################################################
 
 async def add_reaction_message(message: Message):
     reaction_message: Message = await message.channel.send(f"{defs.reaction_role_message}\n"
@@ -613,6 +652,8 @@ async def add_reaction_message(message: Message):
                                     reaction_message.id)
     await reaction_messages.update_single_reaction_message(reaction_message)
 
+##########################################################################################################
+##########################################################################################################
 
 async def leave_server(message: Message, split_content: List[str]):
     if len(split_content) < 3:
@@ -642,6 +683,10 @@ async def leave_server(message: Message, split_content: List[str]):
     except HTTPException:
         await message.channel.send(f"Failed to leave server {guild}.")
 
+##########################################################################################################
+##########################################################################################################
+#Triggers
+##########################################################################################################
 
 # Looser ones should be on bottom, since it's a very loose check from top to bottom.
 # For instance, "ban" should be after "unban" and "temp ban"

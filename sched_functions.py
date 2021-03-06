@@ -24,16 +24,16 @@ async def schedule(message, reminder, time, *recurring):
             #embed.add_field(name='Warning', value='Please specify what do you want me to remind you about.') # Error message
         if time.lower().endswith("d"):
             seconds += int(time[:-1]) * 60 * 60 * 24
-            counter = f"{seconds // 60 // 60 // 24} day(s)"
+            counter = f"{seconds // 60 // 60 // 24} days"
         if time.lower().endswith("h"):
             seconds += int(time[:-1]) * 60 * 60
-            counter = f"{seconds // 60 // 60} hour(s)"
+            counter = f"{seconds // 60 // 60} hours"
         elif time.lower().endswith("m"):
             seconds += int(time[:-1]) * 60
-            counter = f"{seconds // 60} minute(s)"
+            counter = f"{seconds // 60} minutes"
         elif time.lower().endswith("s"):
             seconds += int(time[:-1])
-            counter = f"{seconds} second(s)"
+            counter = f"{seconds} seconds"
         if seconds == 0:
             pass
             #embed.add_field(name='Warning',

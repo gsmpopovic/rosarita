@@ -1,5 +1,6 @@
 # --- Bot name and token ---
-bot_token: str = ""
+# bot_token1: str = ""
+# bot_token2: str = ""
 readable_bot_name: str = "roberta"  # should be lower case
 
 # --- Reaction emojis ---

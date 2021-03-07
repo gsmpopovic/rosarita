@@ -1,15 +1,19 @@
 from discord import Intents
-from defs import bot_token
+#from defs import bot_token
 from rosarita_client import RosaritaClient
-#from test_rosarita_with_playlist import RosaritaClient
+import os
 
+from dotenv import load_dotenv
+
+load_dotenv(verbose=True)
+
+token = os.getenv("BOT_TOKEN_ONE")
 intents = Intents.default()
 intents.typing = False
 intents.members = True
 intents.presences = True
 
 client = RosaritaClient(intents=intents)
-# client.run(bot_token)
 
 
-client.run("Nzg5Mjk4NDczNzM1ODE1MTg3.X9wBfA.f80KyLNnYIamkCPq0uk-3LaLFeM")
+client.run(token)

@@ -58,7 +58,7 @@ class RosaritaClient(discord.Client):
             self.ready = True
             await self.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="@help"))
 
-            print("Ready!")
+            print("Ready.")
 # On message 
     async def on_message(self, message: Message):
         if not self.ready or message.author.bot:

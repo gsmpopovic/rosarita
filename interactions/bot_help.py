@@ -17,6 +17,9 @@ def do_help(is_owner: bool, is_guild_owner: bool, is_dm: bool) -> List[str]:
                            f"\n\tMakes the bot leave server with ID `server_id`")
     else:
         if is_owner or is_guild_owner:
+            content.append(                
+                "\n**---Support---**"
+                "\n Find tech support at: https://discord.gg/48cgK679PU")
             content.append(f"\t**Commands:**\n*(the brackets `[]` are **not** part of the commands)*"
                            f"\n**---===---Admin commands---===---**")
             content.append(

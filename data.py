@@ -133,7 +133,7 @@ async def snipe(message, items, target):
             # await message.channel.send(sniped)
             i = -1
             j = 0
-            while i < items:
+            while j < items:
                 await message.channel.send(_deletes[i])
                 # i will iterate through the list backward. 
                 # j is just to break the loop. 

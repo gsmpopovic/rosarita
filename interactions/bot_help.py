@@ -97,24 +97,24 @@ def do_help(is_owner: bool, is_guild_owner: bool, is_dm: bool) -> List[str]:
         )
         content.append(
             f"**---===---Music commands---===---**"
-            f"\n^^^ {data.self_mention} play https://www.youtube.com/some-video-url ^^^"
+            f"\n^^^ {data.self_mention} music play https://www.youtube.com/some-video-url ^^^"
             f"\n <<< {defs.readable_bot_name} will join the voice channel which message author is currently in,"
             F"\n and play the song given in the URL. Message author *must* be in a voice channel. <<<"
             F"\n If a song is already playing, the URL will be passed to a queue. <<<"
-            f"\n^^^ {data.self_mention} pause ^^^"
+            f"\n^^^ {data.self_mention} music pause ^^^"
             f"\n <<< {defs.readable_bot_name} will pause the song currently playing. <<<"
-            f"\n^^^ {data.self_mention} resume ^^^"
+            f"\n^^^ {data.self_mention} music resume ^^^"
             f"\n <<< {defs.readable_bot_name} will resume the song that was paused. <<<"
-            f"\n^^^ {data.self_mention} stop ^^^"
+            f"\n^^^ {data.self_mention} music stop ^^^"
             f"\n <<< {defs.readable_bot_name} will cease playing and exit queue. <<<"
         )
         content.append(
             f"**---===--- Scheduling commands---===---**"
-            f"\n^^^ {data.self_mention} remind me ('something here') in {interval} [y] ^^^"
+            f"\n^^^ {data.self_mention} remind me ('something here') in  { {interval} } [y] ^^^"
             F"\n<<< {defs.readable_bot_name} will DM message author with the content set in parentheses () at interval set in braces, s/m/h/d stands for seconds, minutes, etc. <<<"
             F"\n<<< [y] is an optional parameter and designates that this reminder will be recurring, i.e., for the interval set by the message author.<<<"
 
-            f"\n^^^ {data.self_mention} remind me ('something here') at {hour} [y] ^^^"
+            f"\n^^^ {data.self_mention} remind me ('something here') at { {hour} } [y] ^^^"
             F"\n<<< {defs.readable_bot_name} will DM message author with the content set in parentheses () at time (24-hour clock) set in braces, HH/MM stands for hours and minutes, e.g., 22:00 for 10:00 PM, etc. <<<"
             F"\n<<< [y] is an optional parameter and designates that this reminder will be recurring, i.e., every day at the hour set by the message author.<<<"
             

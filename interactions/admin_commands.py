@@ -117,13 +117,13 @@ async def remind(message: Message, split_content: List[str]):
         #if not none and the content of [y] is the char y       
         if recurring[0].strip() == "y":
 
-            schedule_recurring = data.client.loop.create_task(sched_functions.schedule(message, reminder, time, recurring))
+            schedule_recurring = data.client.loop.create_task(sched_functions.schedule(message, reminder, time, date, recurring))
             # print(dir(schedule_recurring))
             await user.send("To cancel this reminder, message me: @rosarita canceltask (task name)")
             await user.send(f"Here's the name of this task: {schedule_recurring.get_name()}")
     else: 
-        print("not none")
-        await sched_functions.schedule(message, reminder, time, recurring)
+        print("not recurring - HHMM/DDMMYY")
+        await sched_functions.schedule(message, reminder, time, date, recurring)
         
 ###############################################################################################################
 ###############################################################################################################

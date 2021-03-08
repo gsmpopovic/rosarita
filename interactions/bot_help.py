@@ -74,6 +74,10 @@ def do_help(is_owner: bool, is_guild_owner: bool, is_dm: bool) -> List[str]:
                 f"\n\tList all reaction roles currently configured for this server.")
             content.append(
                 f"\n**---Misc---**"
+                f" or [{data.self_mention}` snipe edits/deletes`]"
+                f"\n\tAttempts to snipe (retrieve) a set number of deleted or edited messages."
+                f"\n\tEdited and deleted messages are deleted 30 seconds after deletion or edit."
+
                 f"\n[{data.self_mention}` clear`] or [{data.self_mention}` clear all`]"
                 f" or [{data.self_mention}` clear number`]"
                 f"\n\tAttempts to delete the last `number` messages."

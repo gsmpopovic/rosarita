@@ -51,7 +51,10 @@ async def schedule(message, reminder, time, *recurring):
             # embed.add_field(name='Warning', value='You have specified a too long duration!\nMaximum duration is 90 days.')
         else:
             await message.channel.send(f"Alright, I will remind you that, and I quote, \"{reminder}\" in {counter}.")
-            if recurring is None: 
+            print(recurring)
+
+            if recurring[0] is None:
+                print("not recurring - interval")
                 await asyncio.sleep(seconds)
                 await user.send(f"Hi, you asked me to remind you that, and I quote, \"{reminder}\" {counter} ago.")
                 #await ctx.send(embed=embed)
@@ -104,9 +107,10 @@ async def schedule(message, reminder, time, *recurring):
         # print(recurring)
         # print(type(recurring))
         await message.channel.send(f"Alright, I will remind you that, and I quote, \"{reminder}\" at {hour}:{str(minute).zfill(2)} hours.")
-
+        print(recurring)
         #for some reason recurring is now a tuple. so we have to index it.
         if recurring[0] is None:
+            print("not recurring")
             await asyncio.sleep(seconds)
             await user.send(f"Hi, you asked me to remind you that, and I quote, \"{reminder}\" at {hour}:{str(minute).zfill(2)} hours.")
         else:

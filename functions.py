@@ -117,6 +117,7 @@ def search(arg):
 #Plays the next song in the queue
 def play_next(voiceclient):
     if len(song_queue) > 1:
+        print(len(song_queue))
         print(song_queue[0])
         del song_queue[0]
         voiceclient.play(FFmpegPCMAudio(executable="C:/ffmpeg/bin/ffmpeg.exe", source=song_queue[0]['source'], **FFMPEG_OPTIONS), after=lambda e: play_next(voiceclient))

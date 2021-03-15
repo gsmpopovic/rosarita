@@ -156,7 +156,7 @@ async def music(message: Message, split_content: List[str]):
             url = split_content[3]
             song = functions.search(url)
             print(song)
-            functions.song_queue.append(song)
+            # functions.song_queue.append(song)
 
         if not voiceclient.is_playing():
 
@@ -171,6 +171,10 @@ async def music(message: Message, split_content: List[str]):
 
             
         else:
+
+            if target=="play":
+                # Only append to queue if a new song is requested.
+                functions.song_queue.append(song)
 
             if target=="pause":
                 voiceclient.pause()

@@ -99,8 +99,8 @@ async def schedule(message, reminder, time, date, recurring):
             # print(seconds)
 
         # You could probably do this without localizing but I needed to
-            tz = pytz.timezone("US/Pacific")
-            # tz = pytz.timezone("US/Eastern")
+            # tz = pytz.timezone("US/Pacific")
+            tz = pytz.timezone("US/Eastern")
             
             # get the current time
             current_time = tz.localize(datetime.now())

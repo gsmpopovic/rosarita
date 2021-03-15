@@ -18,9 +18,8 @@ def c(script_name):
                 print("**********************************************")
                 return
             else:
-                pass
                 # {process.cmdline()} 
-                # print(f"Nope. Process {j} isn't it.")
+                print(f"Nope. Process {j} isn't it.")
 
             j += 1
 
@@ -41,7 +40,7 @@ def c(script_name):
 # I keep getting this error that I'm not passing a callable? But I am?
 # schedule.every(10).seconds.do(c("main.py"),)
 
-#So, we'll do it live. 
+#So, fuck it, we'll do it live. 
 
 i = 0
 

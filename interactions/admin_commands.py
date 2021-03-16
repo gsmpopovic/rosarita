@@ -101,12 +101,13 @@ async def remind(message: Message, split_content: List[str]):
     time=re.search(interval, message.content).group(0).strip()
 
     # time = "\s[0-9]+[smhdy]\s"
-
     # time = "^[0-9]+[smhdy]$"
-    print(date)
-    print(time)
+    # print(date)
+    # print(time)
+
     #find y at the end of the string by itself
     y = "\sy\s*$"
+    
     #"\sy\s$"
     recurring = re.search(y, message.content)
     #**************************
@@ -122,7 +123,7 @@ async def remind(message: Message, split_content: List[str]):
             await user.send("To cancel this reminder, message me: @rosarita canceltask (task name)")
             await user.send(f"Here's the name of this task: {schedule_recurring.get_name()}")
     else: 
-        print("not recurring - HHMM/DDMMYY")
+        print("This is not a recurring reminder - HHMM/DDMMYY")
         await sched_functions.schedule(message, reminder, time, date, recurring)
         
 ###############################################################################################################

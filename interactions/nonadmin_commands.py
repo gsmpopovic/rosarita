@@ -39,6 +39,7 @@ from youtube_dl import YoutubeDL
 
 import requests 
 
+import sched_functions
 ##########################################################################################################
 ##########################################################################################################
 async def canceltask(message: Message, split_content: List[str]):
@@ -112,13 +113,75 @@ async def remind(message: Message, split_content: List[str]):
         #if not none and the content of [y] is the char y       
         if recurring[0].strip() == "y":
 
-            schedule_recurring = data.client.loop.create_task(sched_functions.schedule(message, reminder, time, recurring))
+            schedule_recurring = data.client.loop.create_task(sched_functions.schedule(message, reminder, time, date, recurring))
             # print(dir(schedule_recurring))
             await user.send("To cancel this reminder, message me: @rosarita canceltask (task name)")
             await user.send(f"Here's the name of this task: {schedule_recurring.get_name()}")
     else: 
-        print("not none")
-        await sched_functions.schedule(message, reminder, time, recurring)
+        print("not recurring - HHMM/DDMMYY")
+        await sched_functions.schedule(message, reminder, time, date, recurring)
+        
+#################################################################################################################
+# async def remind(message: Message, split_content: List[str]):
+#     user = message.author
+#     # reminder = split_content[3]
+#     # time = split_content[5]
+
+#     # 03/03/21
+
+#     #This regex will grab everything within parentheses and curly brackets respectively. 
+#     #It returns a list object, so we'll have to 
+#     # remind_subject = re.findall(r'\(.*?\)', message.content) 
+#     # time_subject = re.findall(r'\{.*?\}', message.content)
+
+#     #These will remove the parentheses and brackets via slicing. 
+#     # reminder = remind_subject[0][1:-1]
+#     # time = time_subject[0][1:-1]
+
+#     #This regex is more effective than the above as it'll grab everything within outermost
+#     #parentheses and brackets. So that's a win. 
+#     reminder = re.search( "\((.*)\)" ,message.content).group(1)
+
+#     #get date format in dd/mm/yyyy or dd-mm-yyyy
+#     date = re.search("(\d+[-/]\d+[-/]\d+)", message.content)
+#     print(message.content)
+
+#     #"\s[0-9]+[smhdy]\s*|\s(2[0-3]|[01]?[0-9]):([0-5]?[0-9])\s*"
+
+#     # this is the full regex that gets the 24 hour clock or the interval
+#     interval="\s[0-9]+[smhdy]\s*|\s((2[0-3]|[01]?[0-9]):([0-5]?[0-9]))\s*"
+
+#     #this just gets the #s/m/d/h/y
+#     # interval="\s[0-9]+[smhdy]\s*"
+
+
+#     #get some variation of #s/m/d/h/y or 00-24:00-59
+#     time=re.search(interval, message.content).group(0).strip()
+
+#     # time = "\s[0-9]+[smhdy]\s"
+
+#     # time = "^[0-9]+[smhdy]$"
+#     print(date)
+#     print(time)
+#     #find y at the end of the string by itself
+#     y = "\sy\s*$"
+#     #"\sy\s$"
+#     recurring = re.search(y, message.content)
+#     #**************************
+#     # time = re.search( "\{(.*)\}" ,message.content).group(1)
+#     # recurring = re.search("\[(.*)\]", message.content)
+  
+#     if recurring is not None:
+#         #if not none and the content of [y] is the char y       
+#         if recurring[0].strip() == "y":
+
+#             schedule_recurring = data.client.loop.create_task(sched_functions.schedule(message, reminder, time, recurring))
+#             # print(dir(schedule_recurring))
+#             await user.send("To cancel this reminder, message me: @rosarita canceltask (task name)")
+#             await user.send(f"Here's the name of this task: {schedule_recurring.get_name()}")
+#     else: 
+#         print("not none")
+#         await sched_functions.schedule(message, reminder, time, recurring)
         
 #################################################################################################################
 # Join music channel

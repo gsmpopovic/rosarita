@@ -79,7 +79,7 @@ async def schedule(message, reminder, time, date, recurring):
         if date is not None: 
 
             date = date.group(1)
-
+            print(date)
             dmy = datetime.strptime(date, "%d/%m/%Y")
             day = int(dmy.strftime("%d"))
             month = int(dmy.strftime("%m"))
@@ -182,7 +182,7 @@ async def schedule(message, reminder, time, date, recurring):
             # get the current time
             current_time = tz.localize(datetime.now())
             print(current_time)
-            execution_time
+            # execution_time
             # get the time you want
             execution_time = current_time.replace(hour=hour, minute=minute, second=0)
             #delayed = 0
@@ -191,6 +191,7 @@ async def schedule(message, reminder, time, date, recurring):
             # move the day to tomorrow if the current time is past the execution time
             if execution_time.time() < current_time.time():
                 execution_time = execution_time + timedelta(days=1)
+                print(execution_time)
                 # The delayed variable is to offset the bug later in the code. I need a way to ensure that only
                 # reminders called on the same day will be offset so that they fire 24 hours after they were initially fired
                 # e.g., if a command were set at 5:00 PM to fire at 5:10 PM, I'd need to wait 24 hours after firing, i.e.,
@@ -201,21 +202,24 @@ async def schedule(message, reminder, time, date, recurring):
 
             # This is the total amount of seconds between what time it is right now and the next time we want to
             # execute the task
+            print(execution_time - current_time)
             seconds = (execution_time - current_time).total_seconds()
-            # print(seconds)
+            print(seconds)
             # print(recurring)
             # print(type(recurring))
             await message.channel.send(f"Alright, I will remind you that, and I quote, \"{reminder}\" at {hour}:{str(minute).zfill(2)} hours.")
             print(recurring)
             #for some reason recurring is now a tuple. so we have to index it.
             if recurring is None:
-                print("not recurring")
+                print("not recurring -- no date")
                 await asyncio.sleep(seconds)
                 await user.send(f"Hi, you asked me to remind you that, and I quote, \"{reminder}\" at {hour}:{str(minute).zfill(2)} hours.")
+            
             elif recurring[0] is None:
-                print("not recurring")
+                print("not recurring -- no date")
                 await asyncio.sleep(seconds)
                 await user.send(f"Hi, you asked me to remind you that, and I quote, \"{reminder}\" at {hour}:{str(minute).zfill(2)} hours.")
+            
             else:
 
                 i = 0
@@ -225,7 +229,7 @@ async def schedule(message, reminder, time, date, recurring):
                     # if i == 1 and not delayed == 1:
                     if i == 1:
                         seconds = seconds_day
-                        print("i is 1")
+                        print("We're adding another day now, because the reminder is recurring.")
                     # 03/05/21
                     # There's an interesting bug -- the bot will execute using the originally allotted numbers of seconds
                     # So, add the equivalent of a day.

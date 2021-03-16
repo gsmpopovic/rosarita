@@ -111,8 +111,15 @@ async def schedule(message, reminder, time, date, recurring):
             print(execution_time)
 
             # move the day to tomorrow if the current time is past the execution time
+
+            # If you schedule on a date in the future, where that hour is less than the current hour, 
+            # the line of code where you add a day, as in any other instance, causes a bug, but
+            # I'll just leave it here in case i think oc a better idea.
             if execution_time.time() < current_time.time():
-                execution_time = execution_time + timedelta(days=1)
+                # execution_time = execution_time + timedelta(days=1)
+                pass
+
+                # execution_time = execution_time + timedelta(days=1)
                 # The delayed variable is to offset the bug later in the code. I need a way to ensure that only
                 # reminders called on the same day will be offset so that they fire 24 hours after they were initially fired
                 # e.g., if a command were set at 5:00 PM to fire at 5:10 PM, I'd need to wait 24 hours after firing, i.e.,
@@ -123,6 +130,7 @@ async def schedule(message, reminder, time, date, recurring):
 
             # This is the total amount of seconds between what time it is right now and the next time we want to
             # execute the task
+            print(execution_time - current_time)
             seconds = (execution_time - current_time).total_seconds()
             print(seconds)
             # print(seconds)

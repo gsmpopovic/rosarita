@@ -77,14 +77,26 @@ def data_locked(func):
 async def record_edits(message_before, message_after):
     # _edits.append(message.content)
     author = message_after.author
-    key = f"{message_after.created_at}"
+    # key = f"{message_after.created_at}"
+
+    # _edits.append(
+    #     {key:{
+    #         "author": author.name,
+    #         "before":message_before.content, 
+    #         "after":message_after.content
+    #         }
+    # })
+    
+    # Editing the edits entries 3/17/21
+
     _edits.append(
-        {key:{
-            "author": author.name,
-            "before":message_before.content, 
-            "after":message_after.content
-            }
-    })
+    [
+        {
+        author.name:message_before.content
+
+        }
+    ])
+
     await _save()
 
 # 02/05/21
@@ -93,13 +105,21 @@ async def record_edits(message_before, message_after):
 @data_locked 
 async def record_deletes(deleted_message):
     author = deleted_message.author
-    key = f"{deleted_message.created_at}"
+    # key = f"{deleted_message.created_at}"
+    # _deletes.append(
+    #     {key:{
+    #         "author": author.name,
+    #         "deleted_message":deleted_message.content, 
+    #         }
+    # })
+
     _deletes.append(
-        {key:{
-            "author": author.name,
-            "deleted_message":deleted_message.content, 
-            }
-    })
+    [
+        {
+        author.name:deleted_message.content
+
+        }
+    ])
     await _save()
 
 # 02/05/21
@@ -118,6 +138,7 @@ async def snipe(message, items, target):
             i = -1
             j = 0
             while j < items:
+
                 await message.channel.send(_edits[i])
                 # i will iterate through the list backward. 
                 # j is just to break the loop. 

@@ -6,7 +6,7 @@ import defs
 
 def do_help(is_owner: bool, is_guild_owner: bool, is_dm: bool) -> List[str]:
     content: List[str] = []
-    interval="x s/m/h/d"
+    interval="Xs/m/h/d"
     hour="HH:MM"
     if is_dm:
         if is_owner:

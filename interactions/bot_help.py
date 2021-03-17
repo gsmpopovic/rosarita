@@ -74,7 +74,7 @@ def do_help(is_owner: bool, is_guild_owner: bool, is_dm: bool) -> List[str]:
                 f"\n\tList all reaction roles currently configured for this server.")
             content.append(
                 f"\n**---Misc---**"
-                f" or [{data.self_mention}` snipe edits/deletes`]"
+                f" or [{data.self_mention}` snipe X edits/deletes`]"
                 f"\n\tAttempts to snipe (retrieve) a set number of deleted or edited messages."
                 f"\n\tEdited and deleted messages are deleted 30 seconds after deletion or edit."
 
@@ -119,8 +119,24 @@ def do_help(is_owner: bool, is_guild_owner: bool, is_dm: bool) -> List[str]:
             F"\n<<< y is an optional parameter and designates that this reminder will be recurring, i.e., for the interval set by the message author.<<<"
 
             f"\n^^^ {data.self_mention} remind me ('something here') at {hour} y ^^^"
-            F"\n<<< {defs.readable_bot_name} will DM message author with the content set in parentheses () at time (24-hour clock) set in braces, HH/MM stands for hours and minutes, e.g., 22:00 for 10:00 PM, etc. <<<"
+            F"\n<<< {defs.readable_bot_name} will DM message author with the content set in parentheses () at time (24-hour clock), HH/MM stands for hours and minutes, e.g., 22:00 for 10:00 PM, etc. <<<"
             F"\n<<< y is an optional parameter and designates that this reminder will be recurring, i.e., every day at the hour set by the message author.<<<"
+            F"\n<<< You may, if you would like, pass a date, e.g., on 17/03/2021 <<<"
+            f"\n^^^ {data.self_mention} remind me ('something here') at {hour} on dd/mm/YYYY ^^^"
+            f"\n^^^ NB: If you would like to schedule a time for tomorrow: ^^^"
+            f"\n^^^ If at a time later than the current hour (if there is an interval greater than 24 hours), e.g., 5PM tomorrow when the current time is 4PM^^^"
+            f"\n^^^ You MUST pass a date. e.g., at 17:00 on 18/03/2021 ^^^"
+            f"\n^^^ If at a time earlier than the current hour (if there is an interval less than 24 hours), e.g., 3PM tomorrow when the current time is 4PM^^^"
+            f"\n^^^ You MUST NOT pass a date. e.g., at 15:00 ^^^"
+            f"\n^^^ NB: It is assumed that the user will schedule a time for today (if later than current hour), if no date is passed. ^^^"
+
+
+
+
+
+
+
+
             
             f"\n^^^ {data.self_mention} canceltask (Task-Name) ^^^"
             f"\n<<< When the recurring flag is set by the message author, {defs.readable_bot_name} will DM them and send the name of the task created by this flag., i.e., the recurring reminder. To cancel the reminder, to stop it from recurring, the author must invoke the above command in a channel. <<<"

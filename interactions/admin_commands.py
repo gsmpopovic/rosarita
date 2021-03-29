@@ -168,7 +168,7 @@ async def music(message: Message, split_content: List[str]):
         if not voiceclient.is_playing():
 
             if target=="play":
-                voiceclient.play(FFmpegPCMAudio(executable="C:/ffmpeg/bin/ffmpeg.exe", source=song['source'], **FFMPEG_OPTIONS), after=lambda e: functions.play_next(voiceclient))
+                voiceclient.play(FFmpegPCMAudio(executable=data.client.ffmpeg, source=song['source'], **FFMPEG_OPTIONS), after=lambda e: functions.play_next(voiceclient))
                 voiceclient.is_playing()
 
             elif target=="resume":

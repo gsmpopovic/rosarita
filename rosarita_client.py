@@ -1,3 +1,6 @@
+from dotenv import load_dotenv
+import os
+
 import asyncio
 from typing import List, Optional
 
@@ -57,6 +60,8 @@ class RosaritaClient(discord.Client):
 
             self.ready = True
             await self.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="@help"))
+
+            self.ffmpeg=os.getenv("FFMPEG")
 
             print("Ready.")
 # On message 

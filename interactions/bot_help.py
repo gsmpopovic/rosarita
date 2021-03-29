@@ -3,7 +3,6 @@ from typing import List
 import data
 import defs
 
-
 def do_help(is_owner: bool, is_guild_owner: bool, is_dm: bool) -> List[str]:
     content: List[str] = []
     interval="Xs/m/h/d"

@@ -20,6 +20,14 @@ def do_help(is_owner: bool, is_guild_owner: bool, is_dm: bool) -> List[str]:
             content.append(                
                 "\n**---Support---**"
                 "\n Find tech support at: https://discord.gg/48cgK679PU")
+                            content.append(                
+                "\n**---Server Commands---**"
+                f"\n [{data.self_mention}` memberof`]"
+                f"\n\t Lists all of the guilds that bot is a member of."
+                                f"\n [{data.self_mention}` leaveguild GUILD_ID`]"
+                f"\n\t Forces bot to leave server, the id of which is passed as the second parameter. Can be obtained from the above."
+
+                )
             content.append(
                 f"\n**---Warnings---**"
                 f"\n[{data.self_mention}` warn @user warning_message`]"

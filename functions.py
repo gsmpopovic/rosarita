@@ -66,6 +66,7 @@ async def connect_to_voice(message, client):
                 # and bot as well. 
 
                 if message.content.split()[2]=="leave":
+                    await message.channel.send("Peace out, cub scout.")
                     print("Bot disconnecting from voice channel.")
                     await voiceclient.disconnect()
                     return 0

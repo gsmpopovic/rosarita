@@ -24,6 +24,12 @@ async def connect_to_voice(message, client):
     # A list of the guild's voice channels
     voice_channel_list = message.guild.voice_channels
 
+    # This is to handle the edge case (because you know someone is going to do it)
+    # where a user asks the bot to leave despite the bot not being in a voice channel.
+    if len(client.voice_clients) == 0 and message.content.split()[2]=="leave":
+        await message.channel.send("I'm not in a voice channel, so I can't do that! B-baka!")
+        return 0
+
     if len(client.voice_clients) == 0:
         return await channel.connect() 
 
@@ -53,6 +59,16 @@ async def connect_to_voice(message, client):
                 # functions. So this print statement is here for error handling. 
 
                 print(f"I'm already connected to this voice channel, and the command was {message.content}")
+
+                # If we want our bot to leave a voice channel, we pass the leave keyword. 
+                # @r music leave 
+                # Will only execute given user is connected to a voice channel, 
+                # and bot as well. 
+
+                if message.content.split()[2]=="leave":
+                    print("Bot disconnecting from voice channel.")
+                    await voiceclient.disconnect()
+                    return 0
 
                 return voiceclient
                 # return 0
@@ -121,8 +137,8 @@ def play_next(voiceclient):
         print(song_queue[0])
         del song_queue[0]
         #data.client.ffmpeg
-        # voiceclient.play(FFmpegPCMAudio(executable="C:/ffmpeg/bin/ffmpeg.exe", source=song_queue[0]['source'], **FFMPEG_OPTIONS), after=lambda e: play_next(voiceclient))
-        voiceclient.play(FFmpegPCMAudio(executable=client.ffmpeg, source=song_queue[0]['source'], **FFMPEG_OPTIONS), after=lambda e: play_next(voiceclient))
+        voiceclient.play(FFmpegPCMAudio(executable="C:/ffmpeg/bin/ffmpeg.exe", source=song_queue[0]['source'], **FFMPEG_OPTIONS), after=lambda e: play_next(voiceclient))
+        # voiceclient.play(FFmpegPCMAudio(executable=client.ffmpeg, source=song_queue[0]['source'], **FFMPEG_OPTIONS), after=lambda e: play_next(voiceclient))
 
         voiceclient.is_playing()
 ###########################################################

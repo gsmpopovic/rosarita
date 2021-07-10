@@ -138,7 +138,7 @@ def play_next(voiceclient):
         print(song_queue[0])
         del song_queue[0]
         #data.client.ffmpeg
-        voiceclient.play(FFmpegPCMAudio(executable="C:/ffmpeg/bin/ffmpeg.exe", source=song_queue[0]['source'], **FFMPEG_OPTIONS), after=lambda e: play_next(voiceclient))
+        voiceclient.play(FFmpegPCMAudio(executable=data.client.ffmpeg, source=song_queue[0]['source'], **FFMPEG_OPTIONS), after=lambda e: play_next(voiceclient))
         # voiceclient.play(FFmpegPCMAudio(executable=client.ffmpeg, source=song_queue[0]['source'], **FFMPEG_OPTIONS), after=lambda e: play_next(voiceclient))
 
         voiceclient.is_playing()
